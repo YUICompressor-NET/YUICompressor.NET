@@ -12,13 +12,13 @@ namespace Yahoo.Yui.Compressor.Build
 {
     public class CompressorTaskEngine
     {
-        private CompressionType compressionType;
+        private CompressionType _compressionType;
 
         protected internal LoggingType LogType;
 
         protected internal Encoding Encoding;
 
-        private readonly ICompressor compressor;
+        private readonly ICompressor _compressor;
 
         public string LoggingType { get; set; }
 
@@ -49,8 +49,8 @@ namespace Yahoo.Yui.Compressor.Build
         public CompressorTaskEngine(ILog log, ICompressor compressor)
         {
             Log = log;
-            this.compressor = compressor;
-            this.Encoding = Encoding.Default;
+            _compressor = compressor;
+            Encoding = Encoding.Default;
             DeleteSourceFiles = false;
             LineBreakPosition = -1;
         }
@@ -59,12 +59,12 @@ namespace Yahoo.Yui.Compressor.Build
         {
             try
             {
-                if (this.SetTaskEngineParameters != null)
+                if (SetTaskEngineParameters != null)
                 {
-                    this.SetTaskEngineParameters();
+                    SetTaskEngineParameters();
                 }
                 ParseTaskParameters();
-                if (this.SetCompressorParameters != null)
+                if (SetCompressorParameters != null)
                 {
                     SetCompressorParameters();
                 }
@@ -97,7 +97,7 @@ namespace Yahoo.Yui.Compressor.Build
                 }
             }
 
-            if (this.LogType == Yui.Compressor.LoggingType.Debug)
+            if (LogType == Yui.Compressor.LoggingType.Debug)
             {
                 LogTaskParameters();
                 if (LogAdditionalTaskParameters != null)
@@ -132,10 +132,17 @@ namespace Yahoo.Yui.Compressor.Build
             Log.LogMessage(string.Empty); // This, in effect, is a new line.
 
             var startTime = DateTime.Now;
-            var compressedText = CompressFiles();
+            var errorFound = false;
+            var compressedText = CompressFiles(out errorFound);
+
+            if (errorFound)
+            {
+                Log.LogMessage("Error found during compression - see log.");
+                return false;
+            }
 
             // Save this css to the output file, if we have some result text.
-            if (!this.SaveCompressedText(compressedText))
+            if (!SaveCompressedText(compressedText))
             {
                 Log.LogMessage("Failed to finish compression - terminating prematurely.");
                 return false;
@@ -157,14 +164,14 @@ namespace Yahoo.Yui.Compressor.Build
             if (string.IsNullOrEmpty(CompressionType))
             {
                 LogMessage("No Compression type defined. Defaulting to 'Standard'.");
-                compressionType = ParseCompressionType("Standard");
+                _compressionType = ParseCompressionType("Standard");
             }
             else
             {
-                compressionType = ParseCompressionType(CompressionType);
+                _compressionType = ParseCompressionType(CompressionType);
             }
             ParseEncoding();
-            if (this.ParseAdditionalTaskParameters != null)
+            if (ParseAdditionalTaskParameters != null)
             {
                 ParseAdditionalTaskParameters();
             }
@@ -172,7 +179,7 @@ namespace Yahoo.Yui.Compressor.Build
 
         protected void LogMessage(string message, bool isIndented = false)
         {
-            if (this.LogType != Yui.Compressor.LoggingType.None)
+            if (LogType != Yui.Compressor.LoggingType.None)
             {
                 Log.LogMessage(string.Format(CultureInfo.InvariantCulture, "{0}{1}", isIndented ? "    " : string.Empty, message));
             }
@@ -180,23 +187,23 @@ namespace Yahoo.Yui.Compressor.Build
 
         private void ParseLoggingType()
         {
-            if (string.IsNullOrEmpty(this.LoggingType))
+            if (string.IsNullOrEmpty(LoggingType))
             {
-                this.LogType = Yui.Compressor.LoggingType.Info;
-                this.LogMessage("No logging argument defined. Defaulting to 'Info'.");
+                LogType = Yui.Compressor.LoggingType.Info;
+                LogMessage("No logging argument defined. Defaulting to 'Info'.");
                 return;
             }
 
-            switch (this.LoggingType.ToLowerInvariant())
+            switch (LoggingType.ToLowerInvariant())
             {
                 case "none":
-                    this.LogType = Yui.Compressor.LoggingType.None;
+                    LogType = Yui.Compressor.LoggingType.None;
                     break;
                 case "debug":
-                    this.LogType = Yui.Compressor.LoggingType.Debug;
+                    LogType = Yui.Compressor.LoggingType.Debug;
                     break;
                 case "info":
-                    this.LogType = Yui.Compressor.LoggingType.Info;
+                    LogType = Yui.Compressor.LoggingType.Info;
                     break;
                 default:
                     throw new ArgumentException("Logging Type: " + LoggingType + " is invalid.", "LoggingType");
@@ -205,37 +212,37 @@ namespace Yahoo.Yui.Compressor.Build
         
         private void ParseEncoding()
         {
-            if (string.IsNullOrEmpty(this.EncodingType))
+            if (string.IsNullOrEmpty(EncodingType))
             {
-                this.Encoding = Encoding.Default;
+                Encoding = Encoding.Default;
                 return;
             }
 
-            switch (this.EncodingType.ToLowerInvariant())
+            switch (EncodingType.ToLowerInvariant())
             {
                 case "ascii":
-                    this.Encoding = Encoding.ASCII;
+                    Encoding = Encoding.ASCII;
                     break;
                 case "bigendianunicode":
-                    this.Encoding = Encoding.BigEndianUnicode;
+                    Encoding = Encoding.BigEndianUnicode;
                     break;
                 case "unicode":
-                    this.Encoding = Encoding.Unicode;
+                    Encoding = Encoding.Unicode;
                     break;
                 case "utf32":
                 case "utf-32":
-                    this.Encoding = Encoding.UTF32;
+                    Encoding = Encoding.UTF32;
                     break;
                 case "utf7":
                 case "utf-7":
-                    this.Encoding = Encoding.UTF7;
+                    Encoding = Encoding.UTF7;
                     break;
                 case "utf8":
                 case "utf-8":
-                    this.Encoding = Encoding.UTF8;
+                    Encoding = Encoding.UTF8;
                     break;
                 case "default":
-                    this.Encoding = Encoding.Default;
+                    Encoding = Encoding.Default;
                     break;
                 default:
                     throw new ArgumentException("Encoding: " + EncodingType + " is invalid.", "EncodingType");
@@ -244,10 +251,10 @@ namespace Yahoo.Yui.Compressor.Build
  
         protected virtual void LogTaskParameters()
         {
-            LogMessage("CompressionType: " + this.CompressionType);
+            LogMessage("CompressionType: " + CompressionType);
             LogMessage("DeleteSourceFiles: " + DeleteSourceFiles);
-            LogMessage("EncodingType: " + this.EncodingType);
-            LogMessage("LoggingType: " + this.LoggingType);
+            LogMessage("EncodingType: " + EncodingType);
+            LogMessage("LoggingType: " + LoggingType);
         }
 
         private CompressionType ParseCompressionType(string type)
@@ -264,8 +271,9 @@ namespace Yahoo.Yui.Compressor.Build
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private StringBuilder CompressFiles()
+        private StringBuilder CompressFiles(out bool errorFound)
         {
+            errorFound = false;
             int totalOriginalContentLength = 0;
             StringBuilder finalContent = null;
 
@@ -281,11 +289,12 @@ namespace Yahoo.Yui.Compressor.Build
                     // Load up the file.
                     try
                     {
-                        var originalContent = File.ReadAllText(file.FileName, this.Encoding);
+                        var originalContent = File.ReadAllText(file.FileName, Encoding);
                         totalOriginalContentLength += originalContent.Length;
 
                         if (string.IsNullOrEmpty(originalContent))
                         {
+                            errorFound = true;
                             LogMessage(message, true);
                             Log.LogError(string.Format(CultureInfo.InvariantCulture, "There is no data in the file [{0}]. Please check that this is the file you want to compress.", file.FileName));
                         }
@@ -301,7 +310,7 @@ namespace Yahoo.Yui.Compressor.Build
                             finalContent.Append(compressedContent);
                         }
 
-                        // Try and remove this file, if the user requests to do this.
+                        // Try and remove this file, if the user requests to do 
                         try
                         {
                             if (DeleteSourceFiles)
@@ -315,9 +324,9 @@ namespace Yahoo.Yui.Compressor.Build
                         }
                         catch (Exception exception)
                         {
+                            errorFound = true;
                             Log.LogError(
-                                string.Format(
-                                    CultureInfo.InvariantCulture,
+                                string.Format(CultureInfo.InvariantCulture,
                                     "Failed to delete the path/file [{0}]. It's possible the file is locked?",
                                     file.FileName));
                             Log.LogErrorFromException(exception, false);
@@ -325,6 +334,7 @@ namespace Yahoo.Yui.Compressor.Build
                     }
                     catch (Exception exception)
                     {
+                        errorFound = true;
                         if (exception is FileNotFoundException)
                         {
                             Log.LogError(string.Format(CultureInfo.InvariantCulture, "ERROR reading file or path [{0}].", file.FileName));
@@ -339,8 +349,7 @@ namespace Yahoo.Yui.Compressor.Build
                 }
 
                 LogMessage(
-                    string.Format(
-                        CultureInfo.InvariantCulture,
+                    string.Format(CultureInfo.InvariantCulture,
                         "Finished compressing all {0} file{1}.",
                         SourceFiles.Length,
                         Extensions.ToPluralString(SourceFiles.Length)),
@@ -349,14 +358,13 @@ namespace Yahoo.Yui.Compressor.Build
                 int finalContentLength = finalContent == null ? 0 : finalContent.ToString().Length;
 
                 LogMessage(
-                    string.Format(
-                        CultureInfo.InvariantCulture,
+                    string.Format(CultureInfo.InvariantCulture,
                         "Total original file size: {0}. After compression: {1}. Compressed down to {2}% of original size.",
                         totalOriginalContentLength,
                         finalContentLength,
                         100 - (totalOriginalContentLength - (float)finalContentLength) / totalOriginalContentLength * 100));
 
-                LogMessage(string.Format(CultureInfo.InvariantCulture, "Compression Type: {0}.", compressionType));
+                LogMessage(string.Format(CultureInfo.InvariantCulture, "Compression Type: {0}.", _compressionType));
             }
 
             return finalContent;
@@ -364,25 +372,25 @@ namespace Yahoo.Yui.Compressor.Build
 
         protected internal virtual string Compress(FileSpec file, string originalContent)
         {
-            compressor.CompressionType = GetCompressionTypeFor(file);
-            compressor.LineBreakPosition = LineBreakPosition;
-            return compressor.Compress(originalContent);
+            _compressor.CompressionType = GetCompressionTypeFor(file);
+            _compressor.LineBreakPosition = LineBreakPosition;
+            return _compressor.Compress(originalContent);
         }
 
         private CompressionType GetCompressionTypeFor(FileSpec file)
         {
             var message = "=> " + file.FileName;
-            var actualCompressionType = this.compressionType;
+            var actualCompressionType = _compressionType;
             var overrideType = file.CompressionType;
             if (!string.IsNullOrEmpty(overrideType))
             {
-                actualCompressionType = this.ParseCompressionType(overrideType);
-                if (actualCompressionType != this.compressionType)
+                actualCompressionType = ParseCompressionType(overrideType);
+                if (actualCompressionType != _compressionType)
                 {
                     message += string.Format(" (CompressionType: {0})", actualCompressionType.ToString());
                 }
             }
-            this.LogMessage(message, true);
+            LogMessage(message, true);
             return actualCompressionType;
         }
 
@@ -393,7 +401,7 @@ namespace Yahoo.Yui.Compressor.Build
 
             try
             {
-                File.WriteAllText(OutputFile, compressedText == null ? string.Empty : compressedText.ToString(), this.Encoding);
+                File.WriteAllText(OutputFile, compressedText == null ? string.Empty : compressedText.ToString(), Encoding);
                 Log.LogMessage(string.Format(CultureInfo.InvariantCulture, "Compressed content saved to file [{0}].{1}",
                                              OutputFile, Environment.NewLine));
             }
