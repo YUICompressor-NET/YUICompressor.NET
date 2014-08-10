@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="Nant Example" default="Minify">
+  
+    <loadtasks assembly="..\..\MainAssemblies\Yahoo.Yui.Compressor.Build.Nant.dll" verbose="true" />
+
+    <target name="Minify">
+        <!--           
+            For both tasks, all Properties except SourceFiles and OutputFile are optional
+        
+            cssCompressor:
+                sourceFiles: A FileSet of files to compress.
+                deleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                compressionType: Standard (default) | None.  None => Concatenate files only.
+                encodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                lineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                loggingType: Info (default) | Debug | None.
+                preserveComments: True | False (default).  Set True if you wish to preserve css comments.  False will remove them except ones marked with "!" 
+
+            javaScriptCompressor:
+                sourceFiles: A FileSet of files to compress.
+                deleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                compressionType: Standard (default) | None.  None => Concatenate files only.
+                encodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                lineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                loggingType: Info (default) | Debug | None.  Debug also lists javascript verbose warnings, if there are any (and there usually is :P ).
+                obfuscateJavaScript: True (default) | False.  True => Obfuscate function and variable names
+                preserveAllSemicolons: True | False (default).  True => preserve redundant semicolons (e.g. after a '}'
+                disableOptimizations: True | False (default).
+                threadCulture: The culture you want the thread to run under. This affects the treatment of numbers etc - e.g. 9.00 could be output as 9,00.
+                               Default value is the Invariant Culture
+                isEvalIgnored: True | False (default).  True => compress any functions that contain 'eval'. Default is False, which means a function that contains
+                               'eval' will NOT be compressed. It's deemed risky to compress a function containing 'eval'. That said,
+                               if the usages are deemed safe this check can be disabled by setting this value to True.
+        -->  
+
+      <cssCompressor
+            deleteSourceFiles="false"
+            outputFile="Minified.css"
+            compressionType="Standard"
+            loggingType="Info"
+            preserveComments="false"
+            lineBreakPosition="-1"
+       >
+           <sourceFiles>
+               <include name="StylesheetSample1.css" />
+               <include name="StylesheetSample2.css" />
+               <include name="StylesheetSample3.css" />
+               <include name="StylesheetSample1.css" />
+           </sourceFiles>
+       </cssCompressor>
+
+
+      <!-- The version below produces the exact same results -->
+      <!--
+      <cssCompressor outputFile="Minified.css">
+           <sourceFiles>
+               <include name="StylesheetSample1.css" />
+               <include name="StylesheetSample2.css" />
+               <include name="StylesheetSample3.css" />
+               <include name="StylesheetSample1.css" />
+           </sourceFiles>
+       <cssCompressor>
+       -->
+      
+      <javaScriptCompressor
+          deleteSourceFiles="false"
+          outputFile="Minified.js"
+          compressionType="Standard"
+          obfuscateJavaScript="True"
+          preserveAllSemicolons="False"
+          disableOptimizations="False"
+          encodingType="Default"
+          lineBreakPosition="-1"
+          loggingType="Info"
+          threadCulture="en-au"
+          isEvalIgnored="false"
+       >
+           <sourceFiles>
+               <include name="jquery-1.3.2.js" />
+           </sourceFiles>
+       </javaScriptCompressor>
+
+      <!-- The version below produces the exact same results -->
+      <!--
+      <javaScriptCompressor outputFile="Minified.js">
+           <sourceFiles>
+               <include name="jquery-1.3.2.js" />
+           </sourceFiles>
+       </javaScriptCompressor>
+       -->
+    </target>
+</project>

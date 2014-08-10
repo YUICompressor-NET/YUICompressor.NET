@@ -1,0 +1,138 @@
+﻿/*____                  ____ ____ ____  
+ / ___|___  _ __ ___   / ___/ ___/ ___| 
+| |   / _ \| '__/ _ \ | |   \___ \___ \ 
+| |__| (_) | | |  __/ | |___ ___) |__) |
+ \____\___/|_|  \___|  \____|____/____/ 
+ 
+Author:   Jens Korff - Fairfax Digital
+Project:  Structural core CSS styles for all sites
+Born:     May 2007
+Modified: 
+
+DO NOT MODIFY THIS FILE! 
+Make any changes only to the version which is in version control at 
+svn://cvs.int.f2.com.au/design/coreCSS/!
+-------------------------------------------------------------------------------------------------- */
+
+/* Global (p)reset
+   Only specify the font in % here and in 'em' elsewhere to resize it easily.
+   Browser default: 16px => 76% = 12px => 1em = 12px
+-------------------------------------------------------------------------------------------------- */
+* {padding:0;margin:0}
+html {height:100%}
+body {min-height:101%;font:76%/1.4 Arial, Helvetica, sans-serif;color:#000;background:#fff url("img/bg_body.gif") repeat-y center top;margin:0 auto;text-align:center;position:relative}
+option,select {min-width: 1.5em} /* ensure select element readability in FF */  
+img,a img {border:0}
+
+/* Links
+-------------------------------------------------------------------------------------------------- */
+a {text-decoration:none;outline:none}
+a:link {color:#039}
+a:visited {color:#444}
+a:hover,a:active {color:#900}
+a:hover {text-decoration:underline}
+
+/* Headings
+-------------------------------------------------------------------------------------------------- */
+h1,h2,h3,h4,h5,h6 {margin-top:.5em}
+h1 {font-size:1.8em}
+h2 {font-size:2.2em;position:relative}
+h3 {font-size:1.4em}
+h4 {font-size:1em}
+h5 {font-size:.85em}
+h6 {font-size:.76em}
+
+/* Style any text or links to the right of an element without using a new div: */
+.inlineRight {position:absolute;top:5px;right:5px;font-size:.5em;font-weight:normal}
+.inlineRight a {display:inline}
+ul.inlineRight {margin:0}
+.inlineRight li {display:inline;list-style-type:none;margin:0;padding:0 3px 0 5px;border-right:1px solid #ccc}
+.inlineRight li.last {border:none;padding-right:0}
+.puff h2 .inlineRight {font-size:.8em}
+
+/* Tables
+-------------------------------------------------------------------------------------------------- */
+table {width:auto;margin-bottom:.5em;border-collapse:collapse}
+
+/* Layout
+-------------------------------------------------------------------------------------------------- */
+/* Basic document structure: FooterFullWidth is default */
+#breadcrumb {border-bottom:1px solid #8a8c8f;color:#8a8c8f;font-size:.9em;margin:7px 0 18px 0;padding-bottom:3px}
+#wrap,#contentwrap,#sidebar {position:relative}
+#wrap {position:relative;width:990px;margin:0 auto;text-align:left}
+#contentwrap {width:940px;margin:0 25px}
+#content,#sidebar {float:left;display:inline}
+#content {width:620px;margin:0 20px 0 0;overflow:hidden}
+#sidebar {width:300px;z-index:0;clear:right}
+#footer {width:940px;margin-bottom:1em;text-align:center;clear:both;padding:10px 0;border-top:1px solid #8a8c8f;color:#8a8c8f}
+/* body.FooterInsideContent */
+.FooterInsideContent #content {margin:0 10px}
+.FooterInsideContent #sidebar {position:absolute;top:0;right:10px;left:auto}
+/* body.ContentFullwidth  */
+body.ContentFullwidth {background-image:url(img/bg_body_full-page.gif)}
+.ContentFullwidth #content {width:970px;margin:0 10px}
+.ContentFullwidth #sidebar {display:none}
+.ContentFullwidth #footer {width:970px;margin:0 10px}
+
+/* Generic clearing: */
+.clear {clear:both;position:relative;font-size:0px;height:0;line-height:0}
+.cfix:after {content:".";display:block;height:0;clear:both;visibility:hidden}/*Credit: http://www.positioniseverything.net/easyclearing.html */
+.cBoth {clear:both}
+.cLeft {clear:left}
+
+/* Masthead
+-------------------------------------------------------------------------------------------------- */
+#masthead {clear:both;position:relative;width:940px;margin:0 25px;border-bottom:1px solid #fff/* for FF to render img */}
+#masthead p {width:250px;height:78px;overflow:hidden;float:left;margin-top:0}
+#masthead p a {display:block;float:left;text-indent:-9000px;overflow:hidden;width:250px;height:78px}
+
+/* Lists
+-------------------------------------------------------------------------------------------------- */
+ol li {margin-left:2em;padding-left:0}
+ul li {margin-left:1.2em}
+li em {font-size:.9em;font-weight:normal;font-style:normal;color:#4f4f4f}
+li.more {color:#4f4f4f;font-weight:bold;margin-top:1px}
+
+/* Wofs and Puffs
+-------------------------------------------------------------------------------------------------- */
+.wof {margin-bottom:1em;clear:left}
+	.wof h1,.wof h2,.wof h3,.wof h4,.wof h5 {margin:0;line-height:1.3}
+	.wof small {display:block;color:#4f4f4f;font-size:.63em;margin-bottom:-3px}
+	.wof small a {color:#4f4f4f;font-weight:bold;text-transform:none}
+	.wof img {display:block;float:left;margin:5px 8px 0 0}
+	.wof p {margin-bottom:0.5em}
+	.wof ul {clear:left;margin:3px 0 0 10px}
+	.wof ul li, .puff ul li {margin-left:2em}
+	.wof cite, .latest p cite {font-style:normal;font-size:.9em;color:#666;padding-right:2px}
+	.wof cite span {font-weight:normal;color:#860303}
+.puff {background:#dedede;margin-bottom:1em;position:relative}
+	.puff h1, .puff h2, .puff h3, .puff h4, .puff h5 {margin:0;padding:0 5px;line-height:1.3}
+	.puff h5 strong {color:#900}
+	.puff p {margin:0 5px 5px 5px;line-height:1.3}
+	.puff ul,.puff ol, .puff dl, .puff blockquote {margin:0 5px .5em 5px}
+	.puff p img {float:right;display:inline;margin:5px 0 0 8px}
+#sidebar .puff {background-color:#dedede}
+	#sidebar .puff .wof {margin:0pt 8px 0.4em;padding-bottom:0.4em;width:282px}
+
+/* Styled divs
+-------------------------------------------------------------------------------------------------- */
+.skiplinks {position:absolute;left:-9000px;width:1px;font-size:1px;line-height:1px}
+.writeoffs {float:left;margin:0pt 10px 10px 0pt;overflow:hidden}
+.writeoffs ul {clear:left}
+
+/* Forms
+-------------------------------------------------------------------------------------------------- */
+fieldset {border:0}
+/* form rows - each li is intented to contain a label/control pair */
+ul.fRows li{background:none;clear:left;padding:0.3em 0 0.5em 0}
+ul.fRows label{float:left}
+
+/* Footer
+-------------------------------------------------------------------------------------------------- */
+#footer h1,#footer h2,#footer h3,#footer h4,#footer h5,#footer p {margin:0}
+#footer cite {display:block;margin:10px 0 5px 0}
+
+/* Advertising
+-------------------------------------------------------------------------------------------------- */
+.adSpot {margin-bottom:10px}
+#adSpotBanner-Leader {float:right;margin:5px 4px 4px 0}

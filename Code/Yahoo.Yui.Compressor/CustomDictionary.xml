@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dictionary>
+    <Words>
+      <Recognized>
+        <Word>JavaScript</Word>
+      </Recognized>
+        <Recognized>
+            <Word>Ms</Word>
+        </Recognized>
+        <Recognized>
+            <Word>munge</Word>
+        </Recognized>
+        <Recognized>
+            <Word>Munged</Word>
+        </Recognized>
+        <Recognized>
+            <Word>Munging</Word>
+        </Recognized>
+        <Recognized>
+            <Word>Yui</Word>
+        </Recognized>
+        <Recognized>
+            <Word>YUICompressor</Word>
+        </Recognized>
+      <Recognized>
+        <Word>YuiCompressor</Word>
+      </Recognized>
+    </Words>
+</Dictionary>

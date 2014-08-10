@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+
+  <UsingTask TaskName="CssCompressorTask" AssemblyFile="..\..\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="..\..\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+  <Target Name="Minimize" Condition="'$(ConfigurationName)' == 'Release'">
+    <ItemGroup>
+      <JavaScriptFiles Include="Scripts\jquery-1.3.2.min.js">
+        <CompressionType>None</CompressionType>
+      </JavaScriptFiles>
+      <JavaScriptFiles Include="Scripts\MicrosoftAjax.js"/>
+      <JavaScriptFiles Include="Scripts\MicrosoftMvcAjax.js"/>
+    </ItemGroup>
+
+    <CssCompressorTask
+          SourceFiles="Content\Site.css"
+          OutputFile="Content\Styles.minified.css"
+      />
+
+    <JavaScriptCompressorTask
+        SourceFiles="@(JavaScriptFiles)"
+        DeleteSourceFiles="false"
+        OutputFile="Scripts\JavaScript.minified.js"
+      />
+  </Target>
+</Project>

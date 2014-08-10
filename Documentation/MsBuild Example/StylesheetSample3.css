@@ -1,0 +1,1594 @@
+﻿/* --------------------------------------------
+    Base Styles
+----------------------------------------------- */
+
+body
+{
+	font: small Arial, Verdana, Helvetica, sans-serif;
+    background: #f1f1f1 url("/image/body_bg2.jpg") 0 0 repeat-x;
+    line-height: 130%;
+}
+
+input, textarea, select
+{
+    font-size: 100%;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+h1, h3, h4, strong
+{
+    font-weight: bold;
+}
+
+h1
+{
+    font-size: 160%;
+}
+
+h2
+{
+    font-size: 140%;
+    font-weight: normal;
+}
+
+h3
+{
+    font-size: 118%;
+}
+
+th
+{
+    font-weight: bold;
+}
+
+fieldset
+{
+    padding: 0 15px 15px;
+    border: 1px solid #D7D7D7;
+}
+
+legend
+{
+    padding: 0 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #000;
+}
+
+img.spinner
+{
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+a
+{
+    color: #0265CB;
+    text-decoration: none;
+    outline: none;
+}
+
+a:hover, a:focus
+{
+    color: #0265CB;
+    text-decoration: underline;
+}
+
+.clear
+{
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+}
+
+/* yDSF (ydnar Drop-Shadow-Fu)
+   ydnar@sixapart.com - http://www.sixapart.com
+----------------------------------------------- */
+
+.shadow
+{
+	display: block;
+	position: relative;
+	margin: 5px -5px -5px 5px;
+	background: url("/image/shadow.gif") repeat;
+}
+
+html>body .shadow
+{
+	margin: 10px -10px -10px 10px;
+	background: url("/image/shadow.png") 100% 100% no-repeat;
+}
+
+.shadow:before,
+.shadow:after 
+{
+	content: " ";
+	display: block;
+	width: 10px;
+	height: 10px;
+	background: inherit;	
+}
+
+.shadow:before 
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: -10px 0 0 auto;
+	background-position: 100% 0;
+}
+
+.shadow:after 
+{
+	margin: -10px 0 0 -10px;
+	background-position: 0 100%;
+}
+
+.shadow .inner 
+{
+	display: block;
+	position: relative;
+	left: -5px;
+	top: -5px;
+}
+
+html>body .shadow .inner
+{
+	left: -10px;
+	top: -10px;
+	margin: 0;
+}
+
+/* Header
+----------------------------------------------- */
+
+#header
+{
+    background: #900 url("/image/header_bg.png") 0 0 repeat-x;
+    position: relative;
+    height: 82px;
+    z-index: 10002;
+}
+
+#header h1
+{
+    float: left;
+    padding: 16px 0 0 27px;
+    zoom: 1;
+}
+
+#header h1 img
+{
+    width: 228px;
+    height: 50px;
+}
+
+/* SubHeader */
+
+#subheader
+{
+    clear: both;
+    margin: 0 0 12px;
+    height: 33px;
+    background: url("/image/subheader_bg.png") 0 0 repeat-x;
+    zoom: 1;
+}
+
+#subheader:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#subheader ul
+{
+    height: 33px;
+    background: url("/image/subheader_bg.png") 100% -66px no-repeat;
+}
+
+#subheader li
+{
+    float: left;
+    height: 33px;
+}
+
+#subheader li a
+{
+    display: block;
+    padding: 6px 16px 7px 15px;
+    height: 17px;
+    font-size: 90%;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #fcf2f2;
+    background: url("/image/subheader_div.png") 100% 0 no-repeat;
+}
+
+* html #subheader li a
+{
+	width: 1%;
+}
+
+#subheader li a:hover,
+#subheader li.active a
+{
+    color: #fff;
+    background: #0265cb url("/image/subheader_hover.png") 100% 0 no-repeat;
+}
+
+#subheader #sub-home
+{
+    padding-left: 10px;
+    background: url("/image/subheader_bg.png") 0 -33px no-repeat;
+}
+
+/* User Details */
+
+.userphoto
+{
+    vertical-align: middle;
+    margin-right: 5px;
+    position: relative;
+}
+
+.userinfo
+{
+    float: right;
+}
+
+.userinfo li
+{
+    float: left;
+    padding-left: 10px;
+    font-size: 85%;
+}
+
+.userinfo dt
+{
+    font-size: 110%;
+}
+
+.userinfo dl a
+{
+    text-decoration: underline;
+}
+
+.userinfo dd a
+{
+    font-weight: bold;
+}
+
+.userinfo .user
+{
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.user:hover
+{
+    text-decoration: none;
+}
+
+.user:hover span
+{
+    text-decoration: underline;
+}
+
+#header .userinfo
+{
+    float: right;
+    margin: 10px;
+    padding-left: 10px;
+    width: 175px;
+    height: 62px;
+    color: #fff;
+    background: url("/image/user_info_bg.png") 0 0 no-repeat;
+}
+
+#header .userinfo a, 
+#header .userinfo a:hover
+{
+    color: #fff;
+    line-height: 100%;
+}
+
+#header .userinfo a:hover .streetcred em
+{
+    text-decoration: none;
+}
+
+#header .userinfo dt,
+#header .userinfo dd
+{
+    padding: 2px 0 0 4px;
+}
+
+#header .userinfo ul
+{
+    clear: left;
+    padding-left: 20px;
+    zoom: 1;
+}
+
+#header .userinfo li a
+{
+    white-space: nowrap;
+}
+
+#header .userinfo img
+{
+    float: left;
+}
+
+#header .userinfo strong
+{
+    display: block;
+    padding-top: 10px;
+}
+
+#header .userinfo .rep
+{
+    float: left;
+    margin: 3px 0 2px 1px;
+    background-image: url("/image/user_rep_small_header.gif");
+}
+
+#header .userinfo .userpoints
+{
+    color: #EDD9D9;
+    font-size: 65%;
+    font-weight: normal;
+}
+
+/* User Overview Tooltip */
+
+.useroverview
+{
+    width: 278px;
+    height: 90px;
+    white-space: nowrap;
+    zoom: 1;
+}
+
+.useroverview:after,
+.useroverview .streetcred:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.useroverview
+{
+    line-height: 120%;
+}
+
+.useroverview .col1
+{
+    float: left;
+}
+
+.useroverview .col2
+{
+    float: right;
+    width: 220px;
+    overflow: hidden;
+}
+
+.useroverview h3
+{
+    padding: 3px 0;
+}
+
+.useroverview h3 a
+{
+    font-size: 120%;
+}
+
+.useroverview .website
+{
+    padding-bottom: 7px;
+}
+
+.useroverview .description
+{
+    padding: 0 0 5px;
+}
+
+.useroverview .label
+{
+    clear: left;
+    float: left;
+    display: block;
+    width: 90px;
+    font-weight: bold;
+}
+
+.useroverview .label,
+.useroverview .streetcred,
+.useroverview .date
+{
+    display: block;
+    padding-top: 2px;
+}
+
+.useroverview .streetcred
+{
+    zoom: 1;
+}
+
+.userpoints
+{
+    margin-left: 5px;
+    font-style: normal;
+    font-size: 85%;
+    color: #666;
+}
+
+/* Section Header
+----------------------------------------------- */
+
+#sectionheader
+{
+    background: url("/image/container_header.png") 0 100% repeat-x;
+    border-bottom: 1px solid #B3B3B3;
+    zoom: 1;
+}
+
+#sectionheader:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#sectionheader h2
+{
+    padding: 22px 0;
+    font-size: 160%;
+    text-align: center;
+}
+
+#sectionheader img
+{
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+#sectionheader .introhome
+{
+    display: block;
+    font-size: 70%;
+    font-weight: bold;
+    color: #c00;
+}
+
+/* User Page */
+
+body.User #sectionheader
+{
+    padding-top: 0;
+}
+
+body.User #sectionheader h2
+{
+    padding: 8px 10px 0 24px;
+}
+
+body.User #sectionheader .options
+{
+    padding-top: 20px;
+}
+
+.editprofile
+{
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 1px;
+    
+    padding-top: 25px;
+    width: 87px;
+    background: url("/image/button_editprofile.gif") 0 0 no-repeat;
+}
+
+/* Tabs
+----------------------------------------------- */
+
+.tabnav
+{
+    clear: both;
+    float: left;
+    margin-bottom: -1px;
+    list-style: none;
+    zoom: 1;
+}
+
+.tabnav li
+{
+    float: left;
+    margin-right: 1px;
+    zoom: 1;
+}
+
+.tabnav li a,
+.tabnav li a em
+{
+	background: url("/image/tab_header_bg.gif") 0 0 no-repeat;
+}
+
+.tabnav li a
+{
+    float: left;
+    position: relative;
+	text-decoration: none;
+	color: #444;
+    border-bottom: 1px solid #B3B3B3;
+    zoom: 1;
+}
+
+.tabnav li a em
+{
+    display: block;
+    margin-left: 8px;
+    padding: 7px 16px 6px 8px;
+    font-size: 90%;
+    font-style: normal;
+	background-position: 100% 0;
+}
+
+.tabnav li a:hover
+{
+	text-decoration: none;
+	background-position: 0 -50px;
+}
+
+.tabnav li a:hover em
+{
+    color: #0265CB;
+	background-position: 100% -50px;
+}
+
+.tabnav li.active a,
+.tabnav li.active a:hover
+{
+	background-position: 0 -100px;
+	border-width: 0;
+}
+
+.tabnav li.active a em,
+.tabnav li.active a:hover em
+{
+    padding-bottom: 7px;
+    font-weight: bold;
+	color: #000;
+	background-position: 100% -100px;
+}
+
+.tabnav li a span
+{
+    font-style: normal;
+}
+
+/* SectionHeader Tabs
+----------------------------------------------- */
+
+#sectionheader .tabnav
+{
+    padding-left: 15px;
+}
+
+/* Subnav Tabs
+----------------------------------------------- */
+
+.subnav
+{
+    padding: 10px 15px 0;
+    zoom: 1;
+}
+
+.subnav:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.subnav li
+{
+    display: inline;
+}
+
+.subnav a
+{
+    float: left;
+    display: block;
+    padding: 6px 15px;
+    font-size: 95%;
+    background: url("/image/tab_sub_bg.gif") 0 50% no-repeat;
+}
+
+.subnav a.first
+{
+    background-image: none;
+}
+
+.subnav .active a
+{
+    font-weight: bold;
+    color: #000;
+}
+
+.subnav a:hover,
+.subnav a:active,
+.subnav a:focus
+{
+    color: #000;
+    background-color: #C4DEF5;
+    text-decoration: none;
+}
+
+/* Content
+----------------------------------------------- */
+
+#container
+{
+	margin: 0 auto;
+	width: 980px;
+}
+
+#content
+{
+    clear: both;
+    background: #fff url("/image/content_bg.png") 0 0 no-repeat;
+    zoom: 1;
+}
+
+#content:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#main
+{
+    float: left;
+    padding: 15px 15px 0;
+    width: 950px;
+}
+
+#main.copy
+{
+    padding-bottom: 15px;
+}
+
+#primary, #secondary
+{
+    float: left;
+}
+
+#primary
+{
+    padding: 15px;
+    width: 635px;
+}
+
+#secondary
+{
+    padding: 15px 0 0;
+    width: 300px;
+}
+
+body.popup #container,
+body.popup #main
+{
+    width: auto;
+}
+
+/* Copy
+----------------------------------------------- */
+/**/
+.copy
+{
+    color: #515151;
+}
+
+.copy h3
+{
+    font-size: 120%;
+    color: #c00;
+}
+
+.copy h2,
+.copy h4,
+.copy strong,
+.copy b,
+.copy th
+{
+    color: #000;
+}
+
+.copy h2,
+.copy h3,
+.copy h4
+{
+    padding: 0 0 15px;
+}
+
+.copy h3
+{
+    padding-top: 10px;
+}
+
+.copy h3 em
+{
+    font-size: 85%;
+    font-weight: normal;
+    color: #666;
+}
+
+.copy p
+{
+    padding-bottom: 15px;
+}
+
+.copy em
+{
+    font-style: italic;
+}
+
+.copy a
+{
+    color: #06c;
+    text-decoration: underline;
+}
+
+.copy ul,
+.copy ol
+{
+    padding: 0 0 15px;
+}
+
+.copy ul
+{
+    list-style-type: disc;
+}
+
+.copy ol
+{
+    list-style-type: decimal;
+}
+
+.copy li
+{
+    margin-left: 25px;
+    padding-bottom: 5px;
+}
+
+.copy dt
+{
+    font-weight: bold;
+}
+
+.copy .data
+{
+    margin: 5px 0 15px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+}
+
+#main .copy .data
+{
+    width: 50%;
+}
+
+.copy .data thead th
+{
+    padding: 8px 10px;
+    background: #f1f1f1;
+    border-bottom: 1px solid #ccc;
+}
+
+.copy .data tbody th,
+.copy .data tbody td
+{
+    padding: 6px 10px;
+    width: 50%;
+    border-top: 1px solid #EBEBEB;
+}
+
+.copy .data tbody .first th,
+.copy .data tbody .first td
+{
+    border: 0;
+}
+
+/* Footer
+----------------------------------------------- */
+
+#footer
+{
+    font-size: 85%;
+    border-top: 1px solid #ccc;
+    zoom: 1;
+}
+
+#footer:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#footer, #footer a
+{
+    color: #666;
+}
+
+#footer li
+{
+    display: inline;
+    padding-left: 15px;
+}
+
+.footerleft,
+.footerright
+{
+    padding: 15px 15px 15px 0;
+}
+
+.footerleft,
+.footerleft ul
+{
+    float: left;
+}
+
+.footerright
+{
+    float: right;
+}
+
+#footer a.rss
+{
+    padding-left: 17px;
+    color: #F1651B;
+    background: url("/image/feed-icon-12x12.png") 0 50% no-repeat;
+}
+
+/* Message
+----------------------------------------------- */
+
+.message
+{
+    display: block;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    font-size: 85%;
+    font-weight: bold;
+    color: #000;
+    background: #ccc;
+}
+
+.message ul
+{
+    margin-left: 15px;
+    list-style-type: disc;
+}
+
+.messagesuccess
+{
+    color: #fff;
+    background: #090;
+}
+
+.messageinfo
+{
+    color: #fff;
+    background: #0065C9;
+}
+
+.messageerror
+{
+    color: #fff !important;
+    background: #c00;
+}
+
+.messageerror a
+{
+    color: #fff;
+}
+
+/* Modals
+----------------------------------------------- */
+
+.modalBackground
+{
+    background: #000;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+}
+
+.modalPopup
+{
+	width: 420px;
+	background: #fff;
+    zoom: 1;
+    position: relative;
+}
+
+.modalPopup:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.modalPopup .Footer
+{
+    text-align: right;
+}
+
+/* Multi Columns */
+
+.modalPopup .modalPopupCol1,
+.modalPopup .modalPopupCol2
+{
+    float: left;
+}
+
+/* Paging
+----------------------------------------------- */
+
+.pager
+{
+    padding: 7px 5px 0;
+    zoom: 1;
+    border-top: 1px solid #EBEBEB;
+}
+
+.pager:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.pager a,
+.pager span
+{
+	float: left;
+	padding: 5px 6px;
+    font-size: 85%;
+}
+
+.pager .prev,
+.pager .next
+{
+    font-weight: bold;
+}
+
+.pager a
+{
+    color: #1B5790;
+}
+
+.pager a:hover
+{
+    color: #1B5790;
+    background: #C4DEF5;
+    text-decoration: none;
+}
+
+.pager span
+{
+    font-weight: bold;
+    color: #1B5790;
+    background: #C4DEF5;
+}
+
+.pager span.prev,
+.pager span.next
+{
+    color: #999;
+    background: none;
+}
+
+.pager span.info
+{
+	margin-left: 5px;
+	padding: 5px;
+    font-weight: normal;
+	color: #666;
+    background: none;
+}
+
+/* GridView
+----------------------------------------------- */
+
+.GridView table
+{
+    width: 100%;
+}
+
+/* Content */
+
+.GridView thead th em
+{
+    font-weight: normal;
+}
+
+.GridView tbody td
+{
+    padding: 6px 10px;
+}
+
+/* Paging */
+
+.GridView .paging
+{
+    padding: 10px 0 0 15px;
+}
+
+.GridView .paging a,
+.GridView .paging span
+{
+    margin-right: 1px;
+    padding: 4px 8px;
+    border: 1px solid #D7D7D7;
+}
+
+.GridView .paging a:hover
+{
+    background: #DAEFFA;
+}
+
+.GridView .paging span
+{
+    font-weight: bold;
+    color: #0F7ECB;
+    background: #DAEFFA;
+}
+
+/* -------------------------------------------- */
+
+.admin,
+.disabled
+{
+    color: #000 !important;
+    background: #FED4CC !important;
+}
+
+.reportcontent .copy
+{
+    padding-bottom: 10px;
+}
+
+.reportcontent .comment
+{
+    width: 98%;
+}
+
+.reportcontent table
+{
+    margin-bottom: 5px;
+}
+
+/* Tooltip */
+
+/* Tooltip - Blue */
+
+.tooltip
+{
+    margin: -13px 0 0 10px;
+    background: #fff;
+    border: 1px solid #06c;
+    z-index: 1004;
+}
+
+.tooltip-arrow
+{
+    position: absolute;
+    left: -10px;
+    top: 13px;
+    width: 10px;
+    height: 15px;
+    background: url("/image/tooltip_arrow_score.gif") 100% 0 no-repeat;
+}
+
+.tooltip-content
+{
+    padding: 10px;
+    font-size: 85%;
+    border: 5px solid #C4DEF5;
+}
+
+/* Sign In & Registration */
+
+input.email
+{
+    width: 300px;
+}
+
+#secondary input.email
+{
+    width: 225px;
+}
+
+.terms
+{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.req
+{
+    font-size: 85%;
+    color: #c00 !important;
+}
+
+#signup.formc th,
+#signup.formc td
+{
+    padding: 0;
+}
+
+#signup table
+{
+    width: 100%;
+}
+
+#signup .c-b th, 
+#signup .c-b td
+{
+    padding: 5px;
+}
+
+#signup .check
+{
+    display: block;
+    margin: 15px 0;
+}
+
+#signup .complete h2
+{
+    color: #c00;    
+}
+
+#signup .complete .c-b
+{
+    border: 0;
+}
+
+.login .text,
+.password .text
+{
+    width: 240px;
+}
+
+#secondary .login .text,
+#secondary .password .text
+{
+    width: 165px;
+}
+
+.password .copy
+{
+    font-size: 85%;
+}
+
+a.login
+{
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 1px;    
+
+    padding-top: 25px;
+    width: 73px;
+    background: url("/image/button_login.gif") 0 0 no-repeat;
+}
+
+a.signup
+{
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 1px;    
+
+    padding-top: 25px;
+    width: 87px;
+    background: url("/image/button_signup.gif") 0 0 no-repeat;
+}
+
+.legal
+{
+    font-size: 85%;
+    font-style: italic;
+    color: #666;
+    line-height: 1.4em;
+}
+
+.legal a
+{
+    color: #0265CB;
+    text-decoration: underline;
+}
+
+.tos th, .tos td
+{
+    vertical-align: top;
+}
+
+.tos th
+{
+    font-size: 105%;
+}
+
+.tos td th
+{
+    font-size: 100%;
+    font-weight: normal;
+}
+
+.tos td
+{
+    padding-bottom: 10px;    
+}
+
+/* Advertising
+----------------------------------------------- */
+
+.adc
+{
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+/* Sponsored Ad */
+
+#SponsoredAd .adc
+{
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin-bottom: 15px;
+    padding-bottom: 0;
+}
+
+#SponsoredAd .adc .c-b a
+{
+    display: block;
+    padding: 8px 15px;
+    font-size: 85%;
+    color: #666;
+    cursor: default;
+    line-height: 1.4em;
+}
+
+#SponsoredAd .adc .c-b a.adimage
+{
+    padding: 0;
+    cursor: pointer;
+}
+
+#SponsoredAd .adc .c-b a strong,
+#SponsoredAd .adc .c-b a .url
+{
+    color: #0265CB;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#SponsoredAd .adc .c-b a .url
+{
+    color: #666;
+}
+
+#SponsoredAd .adc .c-b ul a
+{
+    padding: 5px 15px;
+}
+
+#SponsoredAd .adc a:hover,
+#SponsoredAd .adc a:active
+{
+    text-decoration: none;
+}
+
+#SponsoredAd .adc .empty a
+{
+    font-size: 100%;
+    font-style: normal;
+    cursor: pointer;
+}
+
+#SponsoredAd .adc .empty a:hover
+{
+    color: #000;
+    background: #C4DEF5;
+}
+
+
+#SponsoredAd .c-h
+{
+    padding: 8px 15px;
+    border-bottom: 1px solid #EBEBEB;
+}
+
+#SponsoredAd .c-b
+{
+    background: #f4f4f4;
+}
+
+#sectionheader .partner
+{
+    margin-bottom: 10px;
+    padding: 0 0 15px 388px;
+    background: url("/image/container_header.png") 0 100% repeat-x;
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.partner a
+{
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 1px;
+    
+
+    padding-top: 18px;
+    width: 203px;
+    background: url("/image/partner_rea.gif") 0 0 no-repeat;
+}
+
+
+/* Rounded corners
+----------------------------------------------- */
+
+.r-tl, .r-tr, .r-bl, .r-br
+{
+    height: 10px;
+    font-size: 1px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.r-tr, .r-br
+{
+    float: right;
+    width: 10px;
+    background-position: 100% 0;
+}
+
+.r-bl
+{
+    background-position: 0 100%;
+}
+
+.r-br
+{
+    background-position: 100% 100%;
+}
+
+.r-tl, .r-bl
+{
+    zoom: 1;
+}
+
+.r-tl:after, .r-bl:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.r-c
+{
+    zoom: 1;
+}
+
+.r-c:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* RevisionHistory
+----------------------------------------------- */
+
+.versioncompare .legend
+{
+    width: 184px;
+}
+
+.versioncompare .legend .c-h
+{
+    background-color: #fff;
+}
+
+.versioncompare .new
+{
+    background: #ff6;
+}
+
+.versioncompare .removed
+{
+    text-decoration: line-through;
+    color: #f00;
+}
+
+.revisionhistory p.info
+{
+    padding: 10px;
+    font-size: 85%;
+}
+
+.revisionhistory .GridView a
+{
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.revisionhistory .GridView a.user
+{
+    text-decoration: none;
+}
+
+.versiondetails
+{
+    margin-bottom: 10px;
+    border: 1px solid #d7d7d7;
+}
+
+.versiondetails .c-h,
+.versiondetails .c-b
+{
+    padding: 8px 15px;
+}
+
+/* Upload
+----------------------------------------------- */
+
+#uploadhandler
+{
+    background: #fff;
+}
+
+#uploadhandler table
+{
+    width: 100%;
+}
+
+#uploadhandler th,
+#uploadhandler td
+{
+    padding: 5px;
+    vertical-align: top;
+}
+
+#uploadhandler th
+{
+    text-align: right;
+    font-weight: normal;
+}
+
+iframe.UploadManager
+{
+    width: 100%;
+    height: 50px;
+}
+
+.ImageLoading
+{
+    display:none;
+    float: left;
+    padding-top: 45px;
+    margin-left: 120px;
+    text-align:center;
+    position:absolute;
+}
+
+.ImageLoading img
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: text-top;
+}
+
+/* Calendar Container 
+----------------------------------------------- */
+
+.calendar
+{
+    border: solid 2px #a5a5a5;
+    background-color: #fff;
+}
+
+.calendar td
+{
+    line-height: 100%;
+    font-size: 80%;
+    text-align: center;
+}
+
+.calendar .title
+{
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.calendar .day_header,
+.calendar .group_select
+{
+    line-height: 100%;
+    font-weight: bold;
+    color: #0265CB;
+}
+
+.calendar .day_header
+{
+    font-size: 80%;
+    border-bottom: solid 1px #a5a5a5;
+    background-color: #eee;
+}
+
+.calendar .group_select
+{
+    border-right: solid 1px #a5a5a5;
+    text-decoration: underline;
+    background-color: #ddd;
+}
+
+.calendar .other_month
+{
+    background-color: #f8f8f8;
+}
+
+.calendar .today
+{
+    border: 1px solid #cc0000;
+}
+
+
+.newsitem
+{
+    float: left;
+    padding: 15px 0 8px 15px;
+    width: 294px;
+}
+
+.newsitem img
+{
+    float: left;
+    padding-right: 8px;
+    width: 125px;
+    height: 92px;
+}

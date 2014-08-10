@@ -1,0 +1,219 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Help">
+
+    <PropertyGroup>
+        <buildConfig Condition="'$(buildConfig)'==''">Release</buildConfig>
+        <buildTarget Condition="'$(buildTarget)'==''">Any CPU</buildTarget>
+        <Src Condition="'$(Src)'==''">$(MSBuildProjectDirectory)\..</Src>
+        <PackageDir Condition="'$(PackageDir)'==''">$(MSBuildProjectDirectory)\output</PackageDir>
+        <zipPackage>$(PackageDir)\zip</zipPackage>
+        <nuGetPackage>$(PackageDir)\nugetPackages</nuGetPackage>
+        <PackageTempDir >$(PackageDir)\temp</PackageTempDir>
+        <nuGetPath>$(MSBuildProjectDirectory)\</nuGetPath>
+        <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
+    </PropertyGroup>
+
+    <Import Project="MSBuild.Community.Tasks.Targets" />
+
+    
+    <Target Name="All">
+        <CallTarget Targets="Clean" />
+        <CallTarget Targets="Build" />
+        <CallTarget Targets="Package" />
+    </Target>
+
+
+    <Target Name="Clean">
+        <Exec Condition="Exists('$(zipPackage)')" Command="rmdir $(zipPackage) /S /Q" ContinueOnError="true"></Exec>   
+        <Exec Condition="Exists('$(nuGetPackage)')" Command="rmdir $(nuGetPackage) /S /Q" ContinueOnError="true"></Exec>
+        <Exec Condition="Exists('$(PackageDir)')" Command="rmdir $(PackageDir) /S /Q" ContinueOnError="true"></Exec>
+    </Target>
+  
+
+    <Target Name="Build">
+        <MSBuild Projects="$(Src)\YUICompressor.sln" Properties="Configuration=$(buildConfig);Platform=$(buildTarget)" />
+    </Target>
+  
+    
+    <Target Name="Package" DependsOnTargets="GetVersion">
+        <CallTarget Targets="Zip" />
+        <CallTarget Targets="NuGet" />
+    </Target>
+
+    
+    <Target Name="Zip" DependsOnTargets="GetVersion">
+        <MakeDir Condition="!Exists('$(zipPackage)')" Directories="$(zipPackage)"></MakeDir>
+        <ItemGroup>
+            <ZipFiles Include="$(Src)\MainAssemblies\**\*.*" />
+            <ZipFiles Include="New BSD License.txt" />
+        </ItemGroup>
+         
+        <Zip Files="@(ZipFiles)" Flatten="true" ZipFileName="$(zipPackage)\Yahoo.Yui.Compressor v%(assemblyInfo.Version).zip" />
+    </Target>
+
+
+    <Target Name="NuGet" DependsOnTargets="GetVersion">
+        <CallTarget Targets="NuGetMain" />
+        <CallTarget Targets="NuGetMsBuild" />
+        <CallTarget Targets="NuGetNAnt" />
+        <CallTarget Targets="NuGetWebOptimization" />
+    </Target>
+    
+    
+    <Target Name="NuGetMain">
+        <!-- Creates a NuGet package for the main binaries -->
+        <MakeDir Condition="!Exists('$(nuGetPackage)')" Directories="$(nuGetPackage)"></MakeDir>
+
+        <PropertyGroup>
+            <NuSpecFile>YUICompressor.NET.nuspec</NuSpecFile>    
+        </PropertyGroup>
+        
+        <ItemGroup>
+          <MainBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll" />
+        </ItemGroup>
+      
+        <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
+        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=version;PropertyValue=%(assemblyInfo.Version)" />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NuSpecFile);" />  
+    </Target>
+  
+  
+    <Target Name="NuGetMSBuild">
+        <!-- Creates a NuGet package for the MSBuild release -->
+        <MakeDir Condition="!Exists('$(nuGetOutput)')" Directories="$(nuGetOutput)" />
+
+        <PropertyGroup>
+            <OriginalNuSpecFile>YUICompressor.NET.MSBuild.NAnt.nuspec</OriginalNuSpecFile>
+            <NewNuSpecFile>YUICompressor.NET.MSBuild.nuspec</NewNuSpecFile>
+        </PropertyGroup>
+        
+        <!--SIGH!! We have to include all the required dependencies here. Else shit don't workies. -->
+        <ItemGroup>
+            <MSBuildBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll;$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll;$(Src)\MainAssemblies\EcmaScript.NET.dll" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(MSBuildBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(OriginalNuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NewNuSpecFile)" />
+        <Copy SourceFiles="$(Src)\Build\SampleYuiCompressorMsBuild.proj" DestinationFiles="$(PackageTempDir)\Samples\YUICompressor\MSBuild.proj" />
+        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+
+        <!-- Update package specific entries -->
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NewNuSpecFile);PropertyName=title;PropertyValue=YUICompressor .NET MSBuild Task" />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NewNuSpecFile);PropertyName=id;PropertyValue=YUICompressor.NET.MSBuild" />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NewNuSpecFile);PropertyName=description;PropertyValue=This library can minify and/or combine any Javascript and/or Cascading Style Sheets. It includes an MSBuild task so you can automate this process, per build.
+            
+This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor." />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NewNuSpecFile);PropertyName=tags;PropertyValue=compression, compressor, minification, obfuscation, minify, bundle, bundler, combine, javascript, js, CSS, cascading style sheets, msbuild" />
+        
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NewNuSpecFile)" />  
+    </Target>
+
+ 
+    <Target Name="NuGetNAnt">
+        <!-- Creates a NuGet package for the NAnut release -->
+        <MakeDir Condition="!Exists('$(nuGetOutput)')" Directories="$(nuGetOutput)" />
+
+        <PropertyGroup>
+            <NuSpecFile>YUICompressor.NET.MSBuild.NAnt.nuspec</NuSpecFile>
+        </PropertyGroup>
+        
+        <ItemGroup>
+            <NAntBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll;$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.Nant.dll;$(Src)\MainAssemblies\NAnt.Core.dll;$(Src)\MainAssemblies\EcmaScript.NET.dll" />
+        </ItemGroup>
+        
+        <Copy SourceFiles="@(NAntBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+        
+        <!-- Update package specific entries -->
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=title;PropertyValue=YUICompressor .NET NAnt Task" />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=id;PropertyValue=YUICompressor.NET.NAnt" />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=description;PropertyValue=This library can minify and/or combine any Javascript and/or Cascading Style Sheets. It includes a NANT task so you can automate this process, per build.
+            
+This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor." />
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=tags;PropertyValue=compression, compressor, minification, obfuscation, minify, bundle, bundler, combine, javascript, js, CSS, cascading style sheets, nant" />
+        
+        <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NuSpecFile)" />  
+    </Target>
+
+
+    <Target Name="NuGetWebOptimization">
+      <!-- Creates a NuGet package for the Web Optimization binaries -->
+      <MakeDir Condition="!Exists('$(nuGetOutput)')" Directories="$(nuGetOutput)"></MakeDir>
+
+      <PropertyGroup>
+          <NuSpecFile>YUICompressor.NET.Web.Optimization.nuspec</NuSpecFile>
+      </PropertyGroup>
+        
+      <ItemGroup>
+          <WebOptimizationBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Web.Optimization.dll" />
+      </ItemGroup>
+
+      <Copy SourceFiles="@(WebOptimizationBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET45" />
+      <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
+      <Copy SourceFiles="$(Src)\Build\ReadMe-WebOptimization.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
+      <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+      <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NuSpecFile)" />
+    </Target>
+
+    
+    <Target Name="GetVersion">
+        <GetAssemblyIdentity AssemblyFiles="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll">
+            <Output TaskParameter="Assemblies" ItemName="assemblyInfo" />
+        </GetAssemblyIdentity>
+    </Target>
+
+
+    <Target Name="CreateNuGetPackage" DependsOnTargets="GetVersion">
+        <Message Text="NuGet info: $(nuGetPath). OutputDirectory : $(nuGetPackage). File: $(PackageTempDir)\$(nuSpecFile)" Importance="High"/>
+        <MakeDir Condition="!Exists('$(nuGetPackage)')" Directories="$(nuGetPackage)" />
+        <NuGetPack OutputDirectory ="$(nuGetPackage)" File="$(PackageTempDir)\$(nuSpecFile)" Version="%(assemblyInfo.Version)" Verbosity="detailed" />
+        <Exec Command="rmdir $(PackageTempDir) /S /Q" ContinueOnError="true"></Exec>
+    </Target>
+    
+
+    <Target Name="UpdateProperty"> 
+        <XmlUpdate Prefix="n"
+            Namespace="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd"
+            XmlFileName="$(nuSpecFile)"
+            XPath="/n:package/n:metadata/n:$(PropertyName)"
+            Value="$(PropertyValue)" />
+    </Target>
+    
+    
+    <Target Name="Help">
+        <Message Text="YUI Compressor Package Builder" Importance="High"/>
+        <Message Text=" " />
+        <Message Text="Usage: "/>
+        <Message Text="        msbuild /t:&lt;Target&gt; /p:&lt;Property&gt;=&lt;Value&gt; YourMsBuildFile.proj" Importance="High"/>
+        <Message Text="    eg: msbuild /t:All NuGetPackageBuild.proj" Importance="High"/>
+        <Message Text=" " />
+        <Message Text="NOTE:  PLEASE CHECK THE PACKAGES DON'T CONTAIN ALL THE SOLUTION FILES (which is a bug that is happening)." />
+        <Message Text=" " />
+        <Message Text="Main Targets:" Importance="High"/>
+        <Message Text="Clean   - Cleans the output directories" />
+        <Message Text="Build   - Builds the YUICompressor solution" />
+        <Message Text="Package - Creates a binary zip file (e.g for upload to Codeplex) and NuGet packages from the binaries in the" />
+        <Message Text="          '$(Src)\MainAssemblies' directory" />
+        <Message Text="All     - Excutes Clean;Build;Package in that order" />
+        <Message Text=" " />
+        <Message Text="Additional Targets:" Importance="High"/>
+        <Message Text="Zip     - Creates the binary zip file from the binaries in the '$(Src)\MainAssemblies' directory" />
+        <Message Text="NuGet   - Creates the NuGet packages for the main, msbuild, and nant releases" />
+        <Message Text=" " />
+        <Message Text="Optional Properties:" Importance="High"/>
+        <Message Text=" " />
+        <Message Text="buildConfig - Which Build Configuration to use - Debug|Release (Default: Release)" />
+        <Message Text="buildTarget - Which Build Target to use - Any CPU|x86|x64 (Default: Any CPU)" />
+        <Message Text="Src         - The location of the source code (Or where to put it if you do a GET from Codeplex" />
+        <Message Text="              (Default: $(MSBuildProjectDirectory)\src)" />
+        <Message Text="Output      - Where to place the output zip and NuGet packages" /> 
+        <Message Text="              (Default: $(MSBuildProjectDirectory)\output)" />
+        <Message Text=" " />
+    </Target>
+
+</Project>

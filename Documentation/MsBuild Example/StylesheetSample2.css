@@ -1,0 +1,390 @@
+﻿/*
+Author:   Andy Coffey, Jens Korff - Fairfax Digital
+Project:  Structural core CSS styles for all sites
+Born:     May 2007
+Modified: 27 March 2008
+
+IMPORTANT!
+Whenever this file is updated, also copy the changes over to the coreAge.css in business.theage.com.au!
+-------------------------------------------------------------------------------------------------- */
+/* Links
+-------------------------------------------------------------------------------------------------- */
+a:link {color:#004990}
+a:visited {color:#484848}
+a:hover,a:active {color:#c30}
+
+/* Headings
+-------------------------------------------------------------------------------------------------- */
+h1,h2,h3,h4,h5,h6 {margin-top:0;font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal}
+h1 {font-size:1.8em}
+h2 {font-size:2.1em;position:relative}
+h3 {font-size:1.4em}
+h4 {font:bold 1em Arial,Helvetica,sans-serif}
+h5 {font:bold 0.94em Arial,Helvetica,sans-serif}
+h6 {font:bold 0.76em Arial,Helvetica,sans-serif}
+#content h1 {font-size:2.4em;border:none;line-height:1.15}
+#subindex h2 {margin-bottom:.5em}
+
+/* Style any text or links to the right of an element without using a new div: */
+.puff h2 .inlineRight {font-size:.8em}
+
+/* Tables
+-------------------------------------------------------------------------------------------------- */
+tr {vertical-align:top}
+
+/* Layout
+-------------------------------------------------------------------------------------------------- */
+#index #content,#index #sidebar,#subindex #content,#subindex #sidebar,#article #content,#article #sidebar  {margin-top:20px}
+.c2,.c3,.c4,.c5 {clear:both}
+.s1,.s2,.s3,.s4,.s5 {float:left;position:relative;overflow:hidden}
+.c5 .s1,.c5 .s2,.c5 .s3,.c5 .s4,.c5 .s5 {width:172px}
+.c5 .s2,.c5 .s4 {margin:0 20px}
+
+/* Masthead
+-------------------------------------------------------------------------------------------------- */
+#masthead {background:#fff;clear:both;position:relative;padding-top:7px}
+	#masthead p {height:53px;width:176px;background:url(img/bg_headings.gif) top left no-repeat}
+	#masthead h1 {clear:left;float:left;height:64px;width:201px;font-size:2.3em;font-weight:normal;background:#fff url(img/bg_headings.gif) no-repeat -9000px 0/*default:no img*/;text-indent:-9000px}
+	body.national   #masthead h1 {background-position:0  -64px}
+	body.world      #masthead h1 {background-position:0 -128px}
+	body.opinion    #masthead h1 {background-position:0 -192px}
+	body.travel     #masthead h1 {background-position:0 -256px}
+	body.weather    #masthead h1 {background-position:0 -320px}
+	body.technology #masthead h1 {background-position:0 -384px}
+	body.sport      #masthead h1 {background-position:0 -448px}
+	body.lifestyle  #masthead h1 {background-position:0 -512px}
+	body.executive  #masthead h1 {background-position:0 -576px}
+	body.entertain  #masthead h1 {background-position:0 -640px}
+	body.business   #masthead h1 {background-position:0 -704px}
+	body.digitallife #masthead h1{background-position:0 -772px}
+	#masthead h1 a {display:block;width:201px;height:40px;margin-top:24px}
+
+/* Lists
+-------------------------------------------------------------------------------------------------- */
+ul li {color:#8a8c8f}
+
+/* Navigation
+-------------------------------------------------------------------------------------------------- */
+#nav {width:940px;margin:0 25px;height:23px;display:block;position:relative;z-index:1;background:#004990/* default for all sections */}
+	#nav.subNav {padding-bottom:23px;margin-bottom:3px}
+	#nav li {float:left;display:block;margin:0;padding:0;list-style-type:none}
+	#nav li a {color:#fff;font-weight:bold;font-size:12px;padding:6px 8px;line-height:.94;display:block}
+	#nav ul li {position:relative;clear:left}
+	#nav li ul {position:absolute;display:none}
+		#nav li.rsvp ul {margin-left:-56px}
+	#nav ul.over {display:block;top:23px}
+	body.business  #nav {background-color:#004471}
+	body.executive #nav {background-color:#000000}
+	body.lifestyle #nav {background-color:#FF5C00}
+	body.entertain #nav {background-color:#D90000}
+	body.technology #nav {background-color:#003E9E}
+	body.digitallife #nav {background-color:#2DA424}
+	#nav li.selected a {background-color:#fbfbfb;padding-top:3px;padding-left:7px;margin-left:1px;position:relative;top:3px;color:#004990/* default for all sections */}
+	#nav.subNav li.selected a {background-color:#ededed}
+	body.business  #nav li.selected a {color:#004471}
+	body.executive #nav li.selected a {color:#000000}
+	body.lifestyle #nav li.selected a {color:#ff5c01}
+	body.entertain #nav li.selected a {color:#98246f}
+	/* Plain sub navigation, no dropdown: */
+	ol.subNav {position:absolute;left:0;top:23px;width:940px;background-color:#ededed}
+		#nav ol.subNav li {padding-top:3px}
+		#nav ol.subNav li a {top:-2px;padding-top:6px;background-color:transparent;float:left}
+	/* Nav items with dropdown sub nav: */
+	#nav li.myCareer,#nav li.domain,#nav li.rsvp {margin:0}
+	#nav li.drive {margin-left:70px}
+	/* Down arrow: */
+	#nav li.drive a,#nav li.myCareer a,#nav li.domain a,#nav li.rsvp a,#nav li.execStyle a,#nav li.smallBusi a,#nav li.league a,#nav li.afl a,#nav li.union a
+		{display:block;background:transparent url(img/bgHomepage.gif) no-repeat 0 -200px;padding-right:22px}
+	#nav li.drive     a {background-position:38px -200px}
+	#nav li.myCareer  a {background-position:39px -200px}
+	#nav li.domain    a {background-position:75px -200px}
+	#nav li.rsvp      a {background-position:46px -200px}
+	#nav li.execStyle a {background-position:97px -200px}
+	#nav li.smallBusi a {background-position:100px -200px}
+	#nav li.league    a {background-position:34px -200px}
+	#nav li.afl       a {background-position:31px -200px}
+	#nav li.union     a {background-position:44px -200px}
+	/* Dropdown hover colours */
+	#nav li.drive     a:hover,li.over.drive     {background-color:#10B14C}
+	#nav li.myCareer  a:hover,li.over.myCareer  {background-color:#FEEE04;color:#000}
+	#nav li.domain    a:hover,li.over.domain    {background-color:#5d9732}
+	#nav li.rsvp      a:hover,li.over.rsvp      {background-color:#56398B;color:#fff}
+	#nav li.execStyle a:hover,li.over.execStyle {background-color:#000000;color:#fff}
+	#nav li.smallBusi a:hover,li.over.smallBusi {background-color:#0d59b1;color:#fff}
+	#nav li.union     a:hover,li.over.union     {background-color:#581d47;color:#fff}
+	#nav li.league    a:hover,li.over.league    {background-color:#156fcc;color:#fff}
+	#nav li.afl       a:hover,li.over.afl       {background-color:#ff0000}
+	/* Second Level Navigation */
+	.levelB {background:#dedede;border:1px solid #999;border-top:none}
+	#nav .levelB li a {font-weight:normal;background-image:none;font-size:.94em;color:#000}
+	ul.navA,ul.navB,ul.navC,ul.navD {width:120px;overflow:hidden}
+	ul.navA a,ul.navB a,ul.navC a,ul.navD a {display:block;width:110px;overflow:hidden;margin:0;padding:0}
+	/* Cater for wide sport logos: */
+	body.sport ul.navA,body.sport ul.navB,body.sport ul.navC,body.sport ul.navD {width:140px}
+	body.sport ul.navA a,body.sport ul.navB a,body.sport ul.navC a,body.sport ul.navD a {width:130px}
+	/* Nav icons */
+	#nav li.logo a {height:8px;text-indent:-900px;background:transparent url(img/bg_icons.gif) no-repeat 0 0;margin:6px 0 4px 0}
+		#nav li.drive     li.logo a {background-position:5px 0}
+		#nav li.domain    li.logo a {background-position:5px  -100px}
+		#nav li.myCareer  li.logo a {background-position:5px  -200px}
+		#nav li.rsvp      li.logo a {background-position:5px  -300px}
+		#nav li.league    li.logo a {background-position:5px  -600px}
+		#nav li.union     li.logo a {background-position:5px  -700px}
+		#nav li.afl       li.logo a {background-position:5px  -800px}
+		#nav li.smallBusi li.logo a {background-position:5px  -900px}
+		#nav li.execStyle li.logo a {background-position:5px -1000px}
+		#nav li.logo a:hover {background-color:transparent}
+	/* Drop downs */
+	ul#nav li:hover ul {display:block}
+	#nav .nCars {margin-left:71px}
+	#nCarsTab,#nJobsTab,#nRealestateTab,#nDatingTab {background:transparent url(img/bgHomepage.gif) no-repeat 0 -200px;padding-right:22px!important}
+	#nCarsTab {background-position:38px -200px}
+	#nJobsTab {background-position:39px -200px}
+	#nRealestateTab {background-position:75px -200px}
+	#nDatingTab {background-position:46px -200px}
+	.nCars a:hover {background-color:#10B14C}
+	.nJobs a:hover {background-color:#FEEE04;color:#000}
+	.nRealestate a:hover {background-color:#5d9732}
+	.nDating a:hover {background-color:#56398B}
+	/* Second Level Navigation */
+	#nav ul {background:#dedede;border:1px solid #999;border-top:none}
+	#nav ul li a {font-weight:normal;font-size:.94em;color:#000;width:110px;overflow:hidden}
+	#nav ul {width:120px;overflow:hidden}
+	#nav ul li.lDrive a, #nav ul li.lDomain a, #nav ul li.lMycareer a, #nav ul li.lRsvp a {height:8px;margin:6px 0 4px}
+	#nav ul li.lDrive a:hover,#nav ul li.lDomain a:hover,#nav ul li.lMycareer a:hover,#nav ul li.lRsvp a:hover {background-color:transparent}
+	/* Drive Nav */
+	#nav li.nCars ul {width:140px}
+	#nav li.nCars ul a {width:130px}
+	a:hover#nCarsTab, #nav li.nCars:hover, #nav li.nCars a:hover {background-color:#ed1c24;color:#FFF}
+	#nav li.nCars:hover a#nCarsTab {text-decoration:underline}
+	/* MyCareer Nav */
+	a:hover#nJobsTab, #nav li.nJobs:hover, #nav li.nJobs a:hover {background-color:#FEEE04;color:#000}
+	#nav li.nJobs:hover a#nJobsTab {color:#000;text-decoration:underline}
+	/* Domain Nav */
+	a:hover#nRealestateTab, #nav li.nRealestate:hover, #nav li.nRealestate a:hover {background-color:#5d9732;color:#FFF}
+	#nav li.nRealestate:hover a#nRealestateTab {text-decoration:underline}
+	/* RSVP Nav ul.navD {left:-59px}*/
+	#nav li.nDating ul {margin-left:-56px}
+	a:hover#nDatingTab, #nav li.nDating:hover, #nav li.nDating a:hover {background-color:#56398B;color:#FFF;text-decoration:underline}
+	#nav li.nDating:hover a#nDatingTab {text-decoration:underline}
+
+/* Breadcrumb (search and sitemap)
+-------------------------------------------------------------------------------------------------- */
+.breadcrumb {width:940px;padding:3px 0 0 0;font-weight:normal}
+	.breadcrumb p {width:300px;float:left;font:1em/1 Arial,Helvetica,sans-serif}
+	.breadcrumb p em {font:normal 1.3em "Arial Black",Arial,Helvetica,sans-serif;color:#c30}
+	.breadcrumb ul {position:relative;width:740px;float:left;margin:2px 0 0 0;font-size:.94em}
+	.breadcrumb ul li {margin:0;list-style-type:none}
+	.breadcrumb ul li.siteMap {float:right}
+	.breadcrumb form {width:195px;float:right}
+	.breadcrumb ul li.youAre {list-style-type:none;line-height:1.8}
+	.breadcrumb .siteMap a {display:block;position:absolute;top:-2px;left:611px;width:110px;padding:1px 15px 2px 5px;background:#fff url(img/bgHomepage.gif) no-repeat -300px -200px}
+.nSearch {height:20px;overflow:hidden;position:relative}
+	.nSearch p,.nSearch h2 {display:none}
+	.nSearchText {position:absolute;top:0;left:0;width:100px;height:17px;font-size:.94em;padding:0 2px;background:#ccc url(img/bg_icons.gif) repeat-x 0 -500px;border:1px solid #8a8c8f}
+	.nSearchGo {position:absolute;top:0;left:103px}
+	.breadcrumb form div {position:absolute;top:0;left:auto;right:0}
+#allSectionsWrap {border:1px solid #8a8c8f;border-width: 1px 0 0 0;clear:both;height:0;margin:0;overflow:hidden;position:relative}
+	#allSectionsWrap ul {list-style-type:none;margin:0 0 10px 0}
+	#allSectionsWrap .siteSections {width:650px;margin:10px;float:left}
+	#allSectionsWrap .siteSections ul {width:130px;float:left;font-size:.94em}
+	#allSectionsWrap ul li {padding:0 5px 0 0;margin:0 5px 0 0}
+	#allSectionsWrap ul li a strong {color:#000}
+	#allSectionsWrap .otherSections {width:250px;margin:10px 5px 10px 0;float:left;font-size:.94em;clear:right}
+	#allSectionsWrap .otherSections ul {float:left;width:90px;margin:-15px 10px 0 15px}
+	#allSectionsWrap .otherSections ul li {width:90px;float:left;padding:0;clear:left}
+	#allSectionsWrap .otherSections ul li strong {display:block;width:200px;padding:15px 0 0 0}
+	#allSectionsWrap p {position:absolute;top:3px;right:3px}
+	#allSectionsWrap p a {font-size:.9em;padding:0 15px 0 0;background:url(img/btnClose.gif) top right no-repeat}
+.breadcrumb strong {font:normal 1.3em "Arial Black",Arial,Helvetica,sans-serif;color:#c30}
+	.breadcrumb .edPromo {display:block;width:300px;padding-top:2px;margin-left:20px}
+	.breadcrumb .siteMap a {color:#fff}
+
+/* News Strap
+-------------------------------------------------------------------------------------------------- */
+.nstrap {position:relative;background:transparent;width:940px}
+	.nstrap .leadpic {width:300px;float:left}
+	.nstrap .writeoffs {width:300px;float:left;margin:7px 20px 0 20px}
+	.nstrap .features {width:300px;float:left}
+
+/* Section Strap
+-------------------------------------------------------------------------------------------------- */
+.sstrap {position:relative;width:620px;background:#fff;margin-bottom:20px;border-top:2px solid #ccc}
+.sstrap h2 {font-size:2.3em;font-weight:normal}
+	.sstrap .inlineRight {font:normal .94em/1.4 Arial,Helvetica,sans-serif;color:#8a8c8f}
+	.sstrap .inlineRight a,.sstrap h2 a {color:#000}
+	.sstrap .wof {width:620px}
+.sstrap .features {width:192px;float:left}
+	.sstrap .features .puff {background:#dedede}
+	.sstrap .features .puff h3 {font:bold .94em Arial,Helvetica,sans-serif;margin:4px 0 0 0}
+	.sstrap .features .puff p {font-size:.94em}
+.sstrap .writeoffs {width:428px;float:left;margin:0}
+	.sstrap .writeoffs .wof {width:408px;margin-bottom:15px}
+	.sstrap .wof h3 {font-size:1.6em}
+	.sstrap .wof p {display:inline}
+	.sstrap .wof ul,.sstrap .wof li {display:inline;clear:none;padding:0 0 0 2px;margin:0}
+	.sstrap .wof li a {font-size:.94em}
+	.sstrap h5 {font-size:1.6em}
+	.sstrap h5 a {color:#333}
+
+/* Wofs and Puffs
+-------------------------------------------------------------------------------------------------- */
+.wof {margin-bottom:1em;clear:left}
+	.wof h1,.wof h2,.wof h3,.wof h4,.wof h5 {margin:0;line-height:1.3}
+	.wof small {display:block;color:#4f4f4f;font-size:.63em;margin-bottom:-3px}
+	.wof small a {color:#4f4f4f;font-weight:bold;text-transform:none}
+	.wof img {display:block;float:left;margin:5px 8px 0 0}
+	.wof p {margin-bottom:0.5em}
+	.wof ul {clear:left;margin:3px 0 0 10px}
+	.wof ul li,.puff ul li {margin-left:2em}
+	.wof cite,.latest p cite {font-style:normal;font-size:.94em;color:#666;padding-right:2px}
+	.wof cite span {font-weight:normal;color:#860303}
+.puff {border:none;background:#dedede;margin-bottom:1em;padding:0 0 0px 0;position:relative}
+	.puff h1,.puff h2,.puff h3,.puff h4,.puff h5 {margin:0;padding:0 5px;line-height:1.3}
+	.puff h5 strong {color:#900}
+	.puff p {margin:0 5px 5px 5px;line-height:1.3}
+	.puff ul,.puff ol,.puff dl,.puff blockquote {margin:0 5px .5em 5px}
+	.puff p img {float:right;display:inline;margin:5px 0 0 8px}
+#sidebar .wof h3,#sidebar .sstrap .puff h3 {font:bold .9em Arial,Helvetica,sans-serif}
+#sidebar .puff {background-color:#dedede}
+	#sidebar .puff .wof {margin:0pt 8px 0.4em;padding-bottom:0.4em;width:282px}
+
+/* Overlays
+--------------------------------------------------------------------------------------------------*/
+a.video-play, a.more-photos {height:60px;width:90px;position:relative;display:block}
+a span.overlay-button {line-height:10px;text-indent:-9000px;background:transparent url(2005/img/video_sprite2.gif) no-repeat -3px -102px;display:block;position:absolute;left:auto;top:auto;bottom:2px;right:2px;height:14px;width:38px}
+a.more-photos span.overlay-button {background-image:url(2005/img/more_photos_sprite.gif)}
+a:hover span.overlay-button {background-position:-173px -102px}
+
+/* 5 row and footer strap */
+.c5 a.video-play, .c5 a.more-photos {width:172px;height:115px;display:block}
+.c5 span.overlay-button {right:4px;bottom:4px;width:52px;height:18px; background-position:-3px -200px}
+.c5 a:hover span.overlay-button {background-position:-173px -200px}
+
+/* Section LHS wofs */
+.sstrap .wof a.video-play, .sstrap .wof a.more-photos {width:90px;height:60px;display:block;float:left;margin:5px 8px 0pt 0pt}
+.sstrap .wof a.video-play img, .sstrap .wof a.more-photos img {width:90px;height:60px;float:none;margin:0}
+
+/* Section LHS puffs */
+.sstrap .puff a.video-play, .sstrap .puff a.more-photos {width:192px;height:128px}
+.sstrap .puff span.overlay-button {width:52px;height:18px;right:5px;bottom:5px;background-position:-3px -200px}
+.sstrap .puff a:hover span.overlay-button{background-position:-173px -200px}
+
+/* RHS wofs */
+#sidebar .wof a.video-play, #sidebar .wof a.more-photos {float:right;margin:-13px 0pt 0pt 10px}
+#sidebar .wof a.video-play img, #sidebar .wof a.more-photos img {float:none;margin:0}
+
+/* RHS puffs */
+#sidebar .puff a.video-play, #sidebar .puff a.more-photos {width:300px;height:200px}
+#sidebar .puff span.overlay-button {bottom:61px;right:4px}
+#sidebar .puff a.video-play img, #sidebar .puff a.more-photos img {float:none;margin:0}
+
+/* Styled divs
+-------------------------------------------------------------------------------------------------- */
+.skiplinks {position:absolute;left:-9000px;width:1px;font-size:1px;line-height:1px}
+.writeoffs {float:left;margin:0pt 10px 10px 0pt;overflow:hidden}
+.writeoffs ul {clear:left}
+.warning {color:#c30 !important}
+
+/* Forms
+-------------------------------------------------------------------------------------------------- */
+fieldset {border:0}
+/* form rows - each li is intented to contain a label/control pair */
+ul.fRows li{background:none;clear:left;padding:0.3em 0 0.5em 0}
+ul.fRows label{float:left}
+
+/* Footer
+-------------------------------------------------------------------------------------------------- */
+#footer {border:none}
+	#footer h1,#footer h2,#footer h3,#footer h4,#footer h5,#footer p {margin:0}
+	#footer h3,#footer h5,#footer dl,#footer li {text-align:left}
+	#footer p,#footer li {font-size:.94em}
+	#footer dl dt {float:left;width:100px;padding-right:5px;font-weight:bold}
+	#footer ul.siteLinks,#footer ul.sectionLinks {text-align:center;border-bottom:1px solid #ccc;border-top:2px solid #333;padding:5px 0;margin:0 0 10px 0}
+	#footer ul.siteLinks li,#footer ul.sectionLinks li {display:inline;list-style-type:none;margin:0;padding:0 4px 0 2px;border-right:1px solid #ccc}
+	#footer ul.siteLinks li a {color:#000}
+	#footer ul li.last {border:none}
+#footer .classifieds {margin:0 0 15px 0}
+	#footer .classifieds {text-align:center}
+	#footer .classifieds .cDrive {border-top:2px solid #ef181f}
+	#footer .classifieds .cDrive li a {color:#ef181f}
+	#footer .classifieds .cMycareer {border-top:2px solid #fdf300}
+	#footer .classifieds .cMycareer li a {color:#000}
+	#footer .classifieds .cDomain {border-top:2px solid #5d9731}
+	#footer .classifieds .cDomain li a {color:#5d9731}
+	#footer .classifieds .cRsvp {border-top:2px solid #56398b}
+	#footer .classifieds .cRsvp li a {color:#56398b}
+	#footer .classifieds .cStayz {border-top:2px solid #189ce4}
+	#footer .classifieds .cStayz li a {color:#189ce4}
+	#footer .classifieds .cExecutive{border-top:2px solid #384F5D}
+	#footer .classifieds .cExecutive li a {color:#384F5D}
+	#footer .classifieds .cMoneyManager{border-top:2px solid #377238}
+	#footer .classifieds .cMoneyManager li a {color:#444}
+	#footer .classifieds .cInvestSmart{border-top:2px solid #1A1243}
+	#footer .classifieds .cInvestSmart  li a{color:#444}
+	#footer .classifieds .cDomainPrestige{border-top:2px solid #303030}
+	#footer .classifieds .cDomainPrestige li a{color:#444}
+	#footer .classifieds .cInnovations{border-top:2px solid #005B8E}
+	#footer .classifieds .cInnovations li a{color:#444}
+	#footer .classifieds h2 {font:normal 1.4em Georgia,"Times New Roman",Times,serif;;text-align:left;background:#fff;padding:3px 0}
+	#footer .c5.classifieds h2 a {color:#000}
+	#footer .classifieds .wof,#footer .classifieds .puff {height:140px;overflow:hidden;background:#dedede;margin:0;padding:0;border:none}
+	#footer .classifieds .wof h3,#footer .classifieds .wof h5,#footer .classifieds .wof p {margin:0 5px}
+	#footer .classifieds .wof h5 {margin-top:5px;font-weight:normal}
+	#footer .classifieds .wof h3 {font:bold 1em/1.1 Arial, Helvetica, sans-serif}
+	#footer .c5.classifieds ul {margin-top:5px;padding-top:5px}
+	#footer .c5.classifieds .wof p {text-align:left;color:#000;font-size:1em}
+
+#footer .top5 {background:#fff url(img/bgTop5.gif) repeat-x 0 0;border-top:2px solid #333;padding:4px 0 15px 0;margin:10px 0;width:940px}
+	#footer .top5 h2 {font-weight:normal;font-size:1.4em;line-height:1.2;color:#000;margin:0 0 10px 0;padding:0 0 4px 0;border-bottom:1px solid #ccc;text-align:left}
+	#footer .top5 h5 {margin:0 10px;padding-bottom:5px;color:#000;font-weight:bold}
+	#footer .top5 ol {width:170px;overflow:hidden;padding:0}
+	#footer .top5 li {line-height:1.1;margin-bottom:.4em;margin-left:1.5em}
+    .lSmh,.lAge,.lBt,.lWAtoday {display:block;text-indent:-900px;overflow:hidden;height:27px;width:172px;background:transparent url(img/bgHomepage.gif) no-repeat 0 -400px}
+	.lAge {background-position:-200px -400px}
+	.lBt {background-position:-400px -400px}
+    .lWAtoday{background-position:-600px -600px}    
+/* Icons
+-------------------------------------------------------------------------------------------------- */
+.lSmh a,.lAge a,.lBT a,.lDrive a,.lDomain a,.lMycareer a,.lRsvp a,.lStayz a,.lMoneyManager a,.lInvestSmart a,.lExecutive a,
+.lDomainPrestige a,.lBigChair a,.lSmartInvestor a,.lBRW a,.lEssentialBaby a,.lAPM a,.lLeagueHq a,.lRugbyHeaven a,
+.lRealFooty a,.lSmallBusiness
+{display:block;text-indent:-900px;width:172px;height:22px;overflow:hidden;background:transparent url('img/bg_icons.gif') no-repeat 0 0}
+	li.lSmh,li.lAge,li.lBT,li.lDrive,li.lDomain,li.lMycareer,li.lRsvp,li.lStayz,li.lMoneyManager,li.lInvestSmart,li.lExecutive,
+	li.lDomainPrestige,li.lBigChair,li.lSmartInvestor,li.lBRW,	li.lEssentialBaby,li.lAPM,li.lLeagueHq,li.lRugbyHeaven,
+	li.lRealFooty,li.lSmallBusiness
+	{list-style-type:none;margin:5px 0 0 0;padding:0}
+	/* Keep list below sorted alphabetically */
+	.lAge a {background-position:0 -1200px}
+	.lAPM a {background-position:0 -2100px}
+	.lBigChair a {background-position:0 -1400px}
+	.lBRW a {background-position:0 -1800px}
+	.lBT a {background-position:0 -1300px}
+	.lDomain a {background-position:0 -100px}
+	.lDomainPrestige a {background-position:0 -1600px}
+	.lEssentialBaby a {background-position:0 -2000px}
+	.lExecutive a {background-position:0 -1000px}
+	.lInvestSmart a {background-position:0 -1500px}
+	.lLeagueHq a {background-position:0 -600px}
+	.lMoneyManager a {background-position:0 -1700px}
+	.lMycareer a {background-position:0 -200px}
+	.lRealFooty a {background-position:0 -800px}
+	.lRsvp a {background-position:0 -300px}
+	.lRugbyHeaven a {background-position:0 -700px}
+	.lSmallBusiness a {background-position:0 -900px}
+	.lSmartInvestor a {background-position:0 -1900px}
+	.lSmh a {background-position:0 -1100px}
+	.lStayz a {background-position:0 -400px}
+	/* Keep list above sorted alphabetically */
+
+/* Advertising
+-------------------------------------------------------------------------------------------------- */
+.adSpot {margin-bottom:10px}
+.adSpot-featuredadvertiser,.adSpot-sponsoredlinks,.adSpot-twin {border:1px solid #ccc;position:relative;margin-top:5px;padding-top:10px}
+.adSpot-sponsoredlinks small, .adSpot-featuredadvertiser small,.adSpot-twin small {font-size:11px;color:#999;position:absolute;left:5px;top:-9px;background-color:#fff;padding:0 4px!important}
+.adSpot-twin div {width:49.9%;float:left}
+#adSpotBanner-Leader {float:right;margin:10px 0 5px 0}
+#sidebar .adSpotIsland,#sidebar .adSpot-sponsoredlinks {margin-bottom:20px}
+.adSpot-textBoxGraphicRight {height:auto;overflow:hidden;margin:0 0 15px 0;padding:5px 25px 5px 1px;border:1px solid #ccc;border-right:0;background:transparent url(img/bg_adSpot-textBox.gif) 100% 50% no-repeat}
+	.adSpot-textBoxGraphicRight div {width:278px;float:left;margin-top:2px;overflow:hidden}
+	.adSpot-textBoxGraphicRight #adSpot-textBox1 {margin-right:10px;margin-left:5px}

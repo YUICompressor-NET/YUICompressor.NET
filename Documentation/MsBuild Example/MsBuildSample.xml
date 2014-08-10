@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+  
+    <UsingTask TaskName="CssCompressorTask" AssemblyFile="..\..\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+    <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="..\..\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+    <!-- Define the output locations. These can be set via the msbuild command line using
+         /p:OutputFile=$(TargetDir)../whatever...
+         If they are not supplied or are empty, then we the value whatever is supplied, below.
+    -->
+
+    <Target Name="Minify">
+        <!--           
+            For both tasks, all Properties except SourceFiles and OutputFile are optional
+        
+            CssCompressorTask:
+                SourceFiles: An ITaskItem[] list of files to compress.
+                             Add <CompressionType> meta data to individual items to override the default compression type set for the task
+                DeleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                CompressionType: Standard (default) | None.  None => Concatenate files only.
+                EncodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                LineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                LoggingType: Info (default) | Debug | None.
+                PreserveComments: True | False (default).  Set True if you wish to preserve css comments.  False will remove them except ones marked with "!" 
+
+            JavaScriptCompressorTask:
+                SourceFiles: An ITaskItem[] list of files to compress.
+                             Add <CompressionType> meta data to individual items to override the default compression type set for the task
+                DeleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                CompressionType: Standard (default) | None.  None => Concatenate files only.
+                EncodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                LineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                LoggingType: Info (default) | Debug | None.  Debug also lists javascript verbose warnings, if there are any (and there usually is :P ).
+                ObfuscateJavaScript: True (default) | False.  True => Obfuscate function and variable names
+                PreserveAllSemicolons: True | False (default).  True => preserve redundant semicolons (e.g. after a '}'
+                DisableOptimizations: True | False (default).
+                ThreadCulture: The culture you want the thread to run under. This affects the treatment of numbers etc - e.g. 9.00 could be output as 9,00.
+                               Default value is the Invariant Culture
+                IsEvalIgnored: True | False (default).  True => compress any functions that contain 'eval'. Default is False, which means a function that contains
+                               'eval' will NOT be compressed. It's deemed risky to compress a function containing 'eval'. That said,
+                               if the usages are deemed safe this check can be disabled by setting this value to True.
+        -->
+        <ItemGroup>
+            <!-- Single files, listed in order of dependency -->
+            <CssFiles Include="StylesheetSample1.css"/>
+            <CssFiles Include="StylesheetSample2.css"/>
+            <CssFiles Include="StylesheetSample3.css">
+                <CompressionType>None</CompressionType> <!-- This one will not be compressed -->
+            </CssFiles>            
+            <CssFiles Include="StylesheetSample4.css"/>
+            
+            <JavaScriptFiles Include="jquery-1.3.2.js"/>
+        </ItemGroup>
+ 
+      <CssCompressorTask
+            SourceFiles="@(CssFiles)"
+            DeleteSourceFiles="false"
+            OutputFile="Minified.css"
+            CompressionType="Standard"
+            LoggingType="Info"
+            PreserveComments="false"
+            LineBreakPosition="-1"
+       />
+
+      <!-- The version below produces the exact same results -->
+      <!--
+      <CssCompressorTask
+            SourceFiles="@(CssFiles)"
+            OutputFile="Minified.css"
+       />
+       -->
+
+      <!-- The version below will output one minified file per input css file - ie
+           StylesheetSample1.css.min StylesheetSample2.css.min, and StylesheetSample3.css.min-->
+      <!--
+      <CssCompressorTask
+            SourceFiles="@(CssFiles)"
+            DeleteSourceFiles="false"
+            OutputFile="%(CssFiles.Identity).min"
+            CompressionType="Standard"
+            LoggingType="Info"
+            PreserveComments="false"
+            LineBreakPosition="-1"
+      />
+      -->
+      
+      <JavaScriptCompressorTask
+          SourceFiles="@(JavaScriptFiles)"
+          DeleteSourceFiles="false"
+          OutputFile="Minified.js"
+          CompressionType="Standard"
+          ObfuscateJavaScript="True"
+          PreserveAllSemicolons="False"
+          DisableOptimizations="No"
+          EncodingType="Default"
+          LineBreakPosition="-1"
+          LoggingType="Info"
+          ThreadCulture="en-au"
+          IsEvalIgnored="false"
+            />
+
+      <!-- The version below produces the exact same results -->
+      <!--
+      <JavaScriptCompressorTask
+          SourceFiles="@(JavaScriptFiles)"
+          DeleteSourceFiles="false"
+          OutputFile="Minified.js"
+       />
+       -->
+    </Target>
+</Project>
