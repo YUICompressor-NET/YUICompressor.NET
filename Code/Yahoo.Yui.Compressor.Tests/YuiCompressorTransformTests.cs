@@ -44,6 +44,8 @@ namespace Yahoo.Yui.Compressor.Tests
             bundleResponse.ShouldNotBe(null);
             bundleResponse.Content.Substring(0, 300).ShouldBe("/*\n * jQuery JavaScript Library v1.10.2\n * http://jquery.com/\n *\n * Includes Sizzle.js\n * http://sizzlejs.com/\n *\n * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors\n * Released under the MIT license\n * http://jquery.org/license\n *\n * Date: 2013-07-03T13:48Z\n */\n(function(bW,bU){v");
             bundleResponse.Content.Length.ShouldBe(105397);
+
+            memoryStream.Dispose();
         }
     }
 }

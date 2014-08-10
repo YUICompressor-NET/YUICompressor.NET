@@ -90,8 +90,10 @@ namespace Yahoo.Yui.Compressor
                 Thread.CurrentThread.CurrentCulture = ThreadCulture;
                 Thread.CurrentThread.CurrentUICulture = ThreadCulture;
 
-                var memoryStream = new MemoryStream(Encoding.GetBytes(source));
-                _tokens = Parse(new StreamReader(memoryStream, Encoding), ErrorReporter);
+                using (var memoryStream = new MemoryStream(Encoding.GetBytes(source)))
+                {
+                    _tokens = Parse(new StreamReader(memoryStream, Encoding), ErrorReporter);
+                }
 
                 ProcessStringLiterals(_tokens, !DisableOptimizations);
 
