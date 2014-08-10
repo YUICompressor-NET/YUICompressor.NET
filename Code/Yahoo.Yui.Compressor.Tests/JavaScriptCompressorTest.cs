@@ -691,7 +691,6 @@ namespace Yahoo.Yui.Compressor.Tests
 
         [Test]
         [Description("http://yuicompressor.codeplex.com/workitem/10742")]
-        [Ignore("Ignored until the ECMAScript library is fixed")]
         public void Compressing_A_File_With_A_Unicode_BOM_Character_At_Start_Of_File_Should_Succeed()
         {
             // Arrange.
@@ -706,6 +705,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
         [Test]
         [Description("http://yuicompressor.codeplex.com/workitem/10742")]
+        [Ignore("Ignored until the ECMAScript library is fixed")]
         public void Compressing_A_File_With_A_Unicode_BOM_Character_Not_At_Start_Of_File_Should_Succeed()
         {
             // Arrange.
