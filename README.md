@@ -1,7 +1,7 @@
 ##Project Description
 This is a .NET port of the Yahoo! UI Library's YUI Compressor Java project. The objective of this project is to compress any Javascript and Cascading Style Sheets to an efficient level that works exactly as the original source, before it was minified.
 
-![CI Status via AppVeyor](https://ci.appveyor.com/api/projects/status/ttirf8q8kpm89a2v)
+![CI Status via AppVeyor](https://ci.appveyor.com/api/projects/status/ttirf8q8kpm89a2v) ![NuGet](http://img.shields.io/nuget/dt/yuicompressor.net.svg?syle=flat-square)
 
 ##Available via NuGet
 [![NuGet Command](http://i.imgur.com/Bkfqq.png)](http://nuget.org/packages/YUICompressor.NET)
