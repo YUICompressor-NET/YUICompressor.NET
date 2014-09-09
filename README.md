@@ -43,6 +43,7 @@ The only thing I haven't been able to do is get the exact same obfuscation becau
 ##Who's utilising this code/library?
 If you use this code in some project, please drop us a message so we can include it in this list :)
 
+- [Nancy.BundleIt](https://github.com/donnyv/Nancy.BundleIt) by [DonnyV](https://github.com/donnyv) 
 - SquishIt by Justin Etheredge
 - .Less (dot-less) by Christopher Owen, Erik van Brakel, Daniel Hoelbling and James Foster
 - Shinkansen: compress, crunch, combine, and cache JavaScript and CSS by Milan Negovan
