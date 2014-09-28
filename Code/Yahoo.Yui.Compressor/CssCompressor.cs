@@ -9,12 +9,20 @@ namespace Yahoo.Yui.Compressor
     {
         public bool RemoveComments { get; set; }
         public override string ContentType { get { return "text/css"; } }
-
+        
+        private static Regex protectStringRegex = new Regex("(\"([^\\\\\"]|\\\\.|\\\\)*\")|(\'([^\\\\\']|\\\\.|\\\\)*\')", RegexOptions.Compiled);
+        private static Regex calcRegex = new Regex("(calc\\s*\\([^};]*\\))", RegexOptions.Compiled);
+        private static Regex spaceRemoverRegex = new Regex("(^|\\})(([^\\{:])+:)+([^\\{]*\\{)", RegexOptions.Compiled);
+        private static Regex backgroundPositionRegex = new Regex("(?i)(background-position|transform-origin|webkit-transform-origin|moz-transform-origin|o-transform-origin|ms-transform-origin):0(;|})", RegexOptions.Compiled);
+        private static Regex colorRegex = new Regex("rgb\\s*\\(\\s*([0-9,\\s]+)\\s*\\)", RegexOptions.Compiled);
+        private static Regex colorShortenerRegex = new Regex("([^\"'=\\s])(\\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])", RegexOptions.Compiled);
+        private static Regex borderRegex = new Regex("(?i)(border|border-top|border-right|border-bottom|border-right|outline|background):none(;|})", RegexOptions.Compiled);
+        private static Regex emptyRuleRegex = new Regex("[^\\}\\{/;]+\\{\\}", RegexOptions.Compiled);
+        
         public CssCompressor()
         {
             RemoveComments = true;
         }
-
         protected override string DoCompress(string source)
         {
             int totalLen = source.Length;
@@ -49,8 +57,7 @@ namespace Yahoo.Yui.Compressor
 
             // Preserve strings so their content doesn't get accidently minified
             var stringBuilder = new StringBuilder();
-            var pattern = new Regex("(\"([^\\\\\"]|\\\\.|\\\\)*\")|(\'([^\\\\\']|\\\\.|\\\\)*\')");
-            Match match = pattern.Match(source);
+            Match match = protectStringRegex.Match(source);
             int index = 0;
             while (match.Success)
             {
@@ -157,8 +164,7 @@ namespace Yahoo.Yui.Compressor
 
             // Preserve any calc(...) css - https://yuicompressor.codeplex.com/workitem/11445
             stringBuilder = new StringBuilder();
-            pattern = new Regex("(calc\\s*\\(.*\\))");
-            match = pattern.Match(source);
+            match = calcRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -178,8 +184,7 @@ namespace Yahoo.Yui.Compressor
             // But, be careful not to turn "p :link {...}" into "p:link{...}"
             // Swap out any pseudo-class colons with the token, and then swap back.
             stringBuilder = new StringBuilder();
-            pattern = new Regex("(^|\\})(([^\\{:])+:)+([^\\{]*\\{)");
-            match = pattern.Match(source);
+            match = spaceRemoverRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -230,9 +235,7 @@ namespace Yahoo.Yui.Compressor
             // Replace background-position:0; with background-position:0 0;
             // same for transform-origin
             stringBuilder = new StringBuilder();
-            pattern =
-                new Regex("(?i)(background-position|transform-origin|webkit-transform-origin|moz-transform-origin|o-transform-origin|ms-transform-origin):0(;|})");
-            match = pattern.Match(source);
+            match = backgroundPositionRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -250,8 +253,7 @@ namespace Yahoo.Yui.Compressor
             // Shorten colors from rgb(51,102,153) to #336699
             // This makes it more likely that it'll get further compressed in the next step.
             stringBuilder = new StringBuilder();
-            pattern = new Regex("rgb\\s*\\(\\s*([0-9,\\s]+)\\s*\\)");
-            match = pattern.Match(source);
+            match = colorRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -285,8 +287,7 @@ namespace Yahoo.Yui.Compressor
             //     filter: chroma(color="#FFF");
             // which makes the filter break in IE.
             stringBuilder = new StringBuilder();
-            pattern = new Regex("([^\"'=\\s])(\\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
-            match = pattern.Match(source);
+            match = colorShortenerRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -312,9 +313,7 @@ namespace Yahoo.Yui.Compressor
 
             // border: none -> border:0
             stringBuilder = new StringBuilder();
-            pattern =
-                new Regex("(?i)(border|border-top|border-right|border-bottom|border-right|outline|background):none(;|})");
-            match = pattern.Match(source);
+            match = borderRegex.Match(source);
             index = 0;
             while (match.Success)
             {
@@ -329,7 +328,11 @@ namespace Yahoo.Yui.Compressor
             source = Extensions.RegexReplace(source, "(?i)progid:DXImageTransform.Microsoft.Alpha\\(Opacity=", "alpha(opacity=");
 
             // Remove empty rules.
-            source = Extensions.RegexReplace(source, "[^\\}\\{/;]+\\{\\}", string.Empty);
+            if (source.Contains("{}"))
+            {
+                //Test if contains because this regex may be very time consuming, up until 1minute for some 150kb css!)
+                source = emptyRuleRegex.Replace(source, String.Empty);
+            }
 
             if (LineBreakPosition >= 0)
             {
