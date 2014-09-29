@@ -22,4 +22,7 @@ This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor.</d
             <dependency id="EcmaScript.Net" version="1.0.1.0" />
         </dependencies>
     </metadata>
+    <files>
+        <file src="files\**\*.*" target="" /> 
+    </files>
 </package>

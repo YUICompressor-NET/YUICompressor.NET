@@ -8,6 +8,7 @@
         <zipPackage>$(PackageDir)\zip</zipPackage>
         <nuGetPackage>$(PackageDir)\nugetPackages</nuGetPackage>
         <PackageTempDir >$(PackageDir)\temp</PackageTempDir>
+        <PackageTempFilesDir >$(PackageTempDir)\files</PackageTempFilesDir>
         <nuGetPath>$(MSBuildProjectDirectory)\</nuGetPath>
         <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
     </PropertyGroup>
@@ -71,10 +72,10 @@
           <MainBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll" />
         </ItemGroup>
       
-        <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET20" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
-        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
-        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempFilesDir)\readme.txt" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempFilesDir)\New BSD License.txt" />
 
         <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=version;PropertyValue=%(assemblyInfo.Version)" />
         <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NuSpecFile);" />  
@@ -92,14 +93,16 @@
         
         <!--SIGH!! We have to include all the required dependencies here. Else shit don't workies. -->
         <ItemGroup>
-            <MSBuildBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll;$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll;$(Src)\MainAssemblies\EcmaScript.NET.dll" />
+            <MSBuildBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll" />
+            <MSBuildBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+            <MSBuildBinaries Include="$(Src)\MainAssemblies\EcmaScript.NET.dll" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(MSBuildBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="@(MSBuildBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET20" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(OriginalNuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NewNuSpecFile)" />
-        <Copy SourceFiles="$(Src)\Build\SampleYuiCompressorMsBuild.proj" DestinationFiles="$(PackageTempDir)\Samples\YUICompressor\MSBuild.proj" />
-        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
-        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+        <Copy SourceFiles="$(Src)\Build\SampleYuiCompressorMsBuild.proj" DestinationFiles="$(PackageTempFilesDir)\Sample-YuiCompressorMsBuild.proj" />
+        <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempFilesDir)\readme.txt" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempFilesDir)\New BSD License.txt" />
 
         <!-- Update package specific entries -->
         <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NewNuSpecFile);PropertyName=title;PropertyValue=YUICompressor .NET MSBuild Task" />
@@ -122,12 +125,15 @@ This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor." /
         </PropertyGroup>
         
         <ItemGroup>
-            <NAntBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll;$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.Nant.dll;$(Src)\MainAssemblies\NAnt.Core.dll;$(Src)\MainAssemblies\EcmaScript.NET.dll" />
+            <NAntBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.dll" />
+            <NAntBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Build.Nant.dll;" />
+            <NAntBinaries Include="$(Src)\MainAssemblies\NAnt.Core.dll;" />
+            <NAntBinaries Include="$(Src)\MainAssemblies\EcmaScript.NET.dll" />
         </ItemGroup>
         
-        <Copy SourceFiles="@(NAntBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET20" />
+        <Copy SourceFiles="@(NAntBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET20" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
-        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+        <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempFilesDir)\New BSD License.txt" />
         
         <!-- Update package specific entries -->
         <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="UpdateProperty" Properties="nuSpecFile=$(PackageTempDir)\$(NuSpecFile);PropertyName=title;PropertyValue=YUICompressor .NET NAnt Task" />
@@ -153,10 +159,10 @@ This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor." /
           <WebOptimizationBinaries Include="$(Src)\MainAssemblies\Yahoo.Yui.Compressor.Web.Optimization.dll" />
       </ItemGroup>
 
-      <Copy SourceFiles="@(WebOptimizationBinaries)" DestinationFolder="$(PackageTempDir)\lib\NET45" />
+      <Copy SourceFiles="@(WebOptimizationBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET45" />
       <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
-      <Copy SourceFiles="$(Src)\Build\ReadMe-WebOptimization.txt" DestinationFiles="$(PackageTempDir)\readme.txt" />
-      <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempDir)\New BSD License.txt" />
+      <Copy SourceFiles="$(Src)\Build\ReadMe-WebOptimization.txt" DestinationFiles="$(PackageTempFilesDir)\readme.txt" />
+      <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempFilesDir)\New BSD License.txt" />
       <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="CreateNuGetPackage" Properties="nuSpecFile=$(NuSpecFile)" />
     </Target>
 
