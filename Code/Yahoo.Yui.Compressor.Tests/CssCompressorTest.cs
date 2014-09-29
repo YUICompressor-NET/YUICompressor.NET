@@ -708,6 +708,23 @@ namespace Yahoo.Yui.Compressor.Tests
             // Assert
             Assert.That(actual, Is.EqualTo(expected));
         }
+        
+        [Test]
+        public void Calc_Stops_When_It_Should()
+        {
+            const string source = @"
+                .test {
+                    width: calc(100% - (40em + 10px)); height: calc(100% - 2% - 400px);
+                }"
+                ;
+            const string expected = @".test{width:calc(100% - (40em + 10px));height:calc(100% - 2% - 400px)}";
+
+            // Act
+            var actual = target.Compress(source);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
 
         private void CompressAndCompare(string source, string expected)
         {
