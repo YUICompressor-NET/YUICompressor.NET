@@ -20,7 +20,7 @@ namespace Yahoo.Yui.Compressor
 
         public string Compress(string source)
         {
-            if (string.IsNullOrEmpty(source))
+            if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
@@ -45,7 +45,7 @@ namespace Yahoo.Yui.Compressor
         /// <remarks>We've notived that files concatenated together leave BOM's -within- the source text, not just at the start. As such, these cause compression errors.</remarks>
         private static string RemoveByteOrderMark(string source)
         {
-            if (string.IsNullOrEmpty(source))
+            if (source == null)
             {
                 throw new ArgumentNullException("source");
             }

@@ -39,6 +39,33 @@ namespace Yahoo.Yui.Compressor.Tests
         }
 
         [Test]
+        public void CompressEmptyStringCssSuccessfullyCompressesText()
+        {
+            // Arrange.
+            var source = string.Empty;
+
+            // Act.
+            var actual = target.Compress(source);
+
+            // Assert.
+            Assert.That(actual, Is.Empty, "Empty");
+        }
+
+        [Test]
+        public void CompressWhiteSpaceOnlyCssSuccessfullyCompressesText()
+        {
+            // Arrange.
+            var source = @"
+";
+
+            // Act.
+            var actual = target.Compress(source);
+
+            // Assert.
+            Assert.That(actual, Is.Empty, "Empty");
+        }
+
+        [Test]
         public void CompressCssWithASpecificColumnWidthSucessfullyCompressesText()
         {
             // Arrange.
