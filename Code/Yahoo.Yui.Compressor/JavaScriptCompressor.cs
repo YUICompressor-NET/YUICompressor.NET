@@ -45,6 +45,7 @@ namespace Yahoo.Yui.Compressor
         public bool ObfuscateJavascript { get; set; }
         public bool PreserveAllSemicolons { get; set; }
         public bool IgnoreEval { get; set; }
+        public bool DisallowNakedComma { get; set; }
         public CultureInfo ThreadCulture { get; set; }
         public override string ContentType { get { return "text/javascript"; } }
 
@@ -67,6 +68,7 @@ namespace Yahoo.Yui.Compressor
         public JavaScriptCompressor()
         {
             ObfuscateJavascript = true;
+            DisallowNakedComma = false;
             Encoding = Encoding.Default;
             ThreadCulture = CultureInfo.InvariantCulture;
         }
@@ -1070,6 +1072,14 @@ namespace Yahoo.Yui.Compressor
                             parensNesting == 0)
                         {
                             return;
+                        }
+                        if (DisallowNakedComma && token.TokenType == Token.COMMA)
+                        {
+                            JavaScriptToken nextToken = GetToken(0); // peek at next token
+                            if ((nextToken.TokenType == Token.RB) || (nextToken.TokenType == Token.RC))
+                            {
+                                Warn("A naked comma in an array or object declaration will cause an exception in IE7 and earlier.");
+                            }
                         }
                         break;
 

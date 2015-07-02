@@ -86,6 +86,7 @@ namespace Yahoo.Yui.Compressor.Web.Optimization
                     Encoding = jsCompressorConfig.Encoding,
                     ErrorReporter = jsCompressorConfig.ErrorReporter,
                     IgnoreEval = jsCompressorConfig.IgnoreEval,
+                    DisallowNakedComma = jsCompressorConfig.DisallowNakedComma,
                     LineBreakPosition = jsCompressorConfig.LineBreakPosition,
                     LoggingType = jsCompressorConfig.LoggingType,
                     ObfuscateJavascript = jsCompressorConfig.ObfuscateJavascript,

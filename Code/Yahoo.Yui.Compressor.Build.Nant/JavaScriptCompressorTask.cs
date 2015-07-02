@@ -29,6 +29,9 @@ namespace Yahoo.Yui.Compressor.Build.Nant
         [TaskAttribute("isEvalIgnored")]
         public bool IsEvalIgnored { get; set; }
 
+        [TaskAttribute("disallowNakedComma")]
+        public bool DisallowNakedComma { get; set; }
+
         public JavaScriptCompressorTask() : this(new JavaScriptCompressor())
         {
         }
@@ -79,6 +82,7 @@ namespace Yahoo.Yui.Compressor.Build.Nant
         {
             compressor.DisableOptimizations = DisableOptimizations;
             compressor.IgnoreEval = IsEvalIgnored;
+            compressor.DisallowNakedComma = DisallowNakedComma;
             compressor.ObfuscateJavascript = ObfuscateJavaScript;
             compressor.PreserveAllSemicolons = PreserveAllSemicolons;
             compressor.ThreadCulture = threadCulture;

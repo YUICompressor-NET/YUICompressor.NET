@@ -690,6 +690,67 @@ namespace Yahoo.Yui.Compressor.Tests
         }
 
         [Test]
+        [Description("https://github.com/PureKrome/YUICompressor.NET/issues/9")]
+        public void DisallowNakedCommaWarning()
+        {
+            const string arrayDeclarationBadSource = @"var anArray = [1,'2',];";
+            const string arrayDeclarationGoodSource = @"var anArray = [1,'2',3];";
+            const string objectDeclarationBadSource = @"var anObject = {a:1,b:'2',};";
+            const string objectDeclarationGoodSource = @"var anObject = {a:1,b:'2',c:3};";
+
+            target.LoggingType = LoggingType.Debug;
+
+            // Test with the DisallowNakedComma disabled, for backwards compatibility.
+            // Act 
+            target.Compress(arrayDeclarationBadSource);
+            
+            // Assert
+            var reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred with the option disabled.");
+
+            // Act
+            target.Compress(arrayDeclarationGoodSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred that shouldn't have.");
+            
+            // Act
+            target.Compress(objectDeclarationBadSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred with the option disabled.");
+            
+            // Act
+            target.Compress(objectDeclarationGoodSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred that shouldn't have.");
+
+            target.DisallowNakedComma = true;
+
+            // Act
+            target.Compress(arrayDeclarationBadSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.Not.EqualTo(0), "Warning missing with the option enabled.");
+            target.ErrorReporter = null; // reset
+
+            // Act
+            target.Compress(arrayDeclarationGoodSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred that shouldn't have.");
+
+            // Act
+            target.Compress(objectDeclarationBadSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.Not.EqualTo(0), "Warning missing with the option enabled.");
+            target.ErrorReporter = null; // reset
+
+            // Act
+            target.Compress(objectDeclarationGoodSource);
+            reporter = (CustomErrorReporter)target.ErrorReporter;
+            Assert.That(reporter.ErrorMessages.Count, Is.EqualTo(0), "A Warning occurred that shouldn't have.");
+
+            target.DisallowNakedComma = false; // restore default configuration for any following tests.
+        }
+
+        [Test]
         [Description("http://yuicompressor.codeplex.com/workitem/10742")]
         public void Compressing_A_File_With_A_Unicode_BOM_Character_At_Start_Of_File_Should_Succeed()
         {
