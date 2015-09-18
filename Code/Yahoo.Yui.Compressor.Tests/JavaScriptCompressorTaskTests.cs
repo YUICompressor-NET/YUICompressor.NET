@@ -12,10 +12,28 @@ namespace Yahoo.Yui.Compressor.Tests
     [TestFixture]
     public class JavaScriptCompressorTaskTests
     {
+        private static StringBuilder AppendFiles(ITaskItem[] sourceFiles)
+        {
+            var sb = new StringBuilder();
+            int index = 0;
+            foreach (var file in sourceFiles)
+            {
+                if (index > 0)
+                {
+                    sb.AppendLine();
+                }
+
+                sb.Append(File.ReadAllText(file.ItemSpec));
+                index++;
+            }
+
+            return sb;
+        }
+
         [Test]
         public void When_The_CompressionType_Is_None_The_Input_Files_Are_Concatenated_Unchanged()
         {
-            // Arange
+            // Arrange
             var compressor = CreateCompressorTask();
             compressor.CompressionType = "None";
             compressor.SourceFiles = new ITaskItem[]
@@ -30,11 +48,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert
             var actual = File.ReadAllText("noCompression.js");
-            var sb = new StringBuilder();
-            foreach (var file in compressor.SourceFiles)
-            {
-                sb.Append(File.ReadAllText(file.ItemSpec));
-            }
+            var sb = AppendFiles(compressor.SourceFiles);
             Assert.That(actual, Is.EqualTo(sb.ToString()));
         }
 
@@ -55,11 +69,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert
             var actual = File.ReadAllText("compressed.js");
-            var sb = new StringBuilder();
-            foreach (var file in compressor.SourceFiles)
-            {
-                sb.Append(File.ReadAllText(file.ItemSpec));
-            }
+            var sb = AppendFiles(compressor.SourceFiles);
             Assert.That(actual.Length, Is.LessThan(sb.Length));
         }
 
@@ -106,11 +116,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert
             var actual = File.ReadAllText("semicompressed.js");
-            var sb = new StringBuilder();
-            foreach (var file in compressor.SourceFiles)
-            {
-                sb.Append(File.ReadAllText(file.ItemSpec));
-            }
+            var sb = AppendFiles(compressor.SourceFiles);
             Assert.That(actual.Length, Is.LessThan(sb.Length));
         }
 

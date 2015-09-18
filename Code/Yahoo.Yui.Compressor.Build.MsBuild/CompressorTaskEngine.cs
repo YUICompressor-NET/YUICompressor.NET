@@ -303,10 +303,39 @@ namespace Yahoo.Yui.Compressor.Build
 
                         if (!string.IsNullOrEmpty(compressedContent))
                         {
+                            bool prependNewLine = false;
                             if (finalContent == null)
                             {
                                 finalContent = new StringBuilder();
                             }
+                            else
+                            {
+                                // If there is only one file to compress, do not add the line, since it is not needed.
+
+                                // If it's a second file, add a new line to avoid any syntax error when merging the files.
+                                // for example, jquery.min.js is:
+                                //      /*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
+                                //      !function ...
+                                //      //# sourceMappingURL=jquery.min.map
+                                // so if I join with another file like bootstrap.min.js
+                                //      /*!
+                                //       * Bootstrap v3.3.5 (http://getbootstrap.com)
+                                //       * Copyright 2011-2015 Twitter, Inc.
+                                //       * Licensed under the MIT license
+                                //       */
+                                //       if("...
+                                // the resulting file is merged like this:
+                                //      //# sourceMappingURL=jquery.min.map /*!
+                                //
+                                // Therefore I get syntax errors!
+                                prependNewLine = true;
+                            }
+
+                            if (prependNewLine)
+                            {
+                                finalContent.AppendLine();
+                            }
+
                             finalContent.Append(compressedContent);
                         }
 
