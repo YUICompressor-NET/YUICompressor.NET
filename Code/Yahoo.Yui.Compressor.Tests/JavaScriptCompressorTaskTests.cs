@@ -74,6 +74,30 @@ namespace Yahoo.Yui.Compressor.Tests
         }
 
         [Test]
+        public void Verify_MinifiedNoCompression_NewLine()
+        {
+            // Arrange
+            var compressor = CreateCompressorTask();
+            compressor.SourceFiles = new ITaskItem[]
+                {
+                    new TaskItem(@"Javascript Files\SampleJavaScript6.js"),
+                    new TaskItem(@"Javascript Files\SampleJavaScript7.js")
+                };
+            
+            // The fail seem to only happen when the files are already minified and no compression is done
+            compressor.CompressionType = "None";
+            compressor.OutputFile = "compressednewline.output.js";
+
+            // Act
+            compressor.Execute();
+
+            // Assert
+            var actual = File.ReadAllText("compressednewline.output.js");
+            var expect = File.ReadAllText("compressednewline.js");
+            Assert.AreEqual(actual, expect);
+        }
+
+        [Test]
         [Description("http://yuicompressor.codeplex.com/workitem/10507")]
         public void Accents_Should_Be_Retained_When_Encoded_With_UTF8()
         {

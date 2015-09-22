@@ -415,6 +415,15 @@
     <Content Include="Javascript Files\Accents.Expected.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Javascript Files\compressednewline.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Javascript Files\SampleJavaScript6.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Javascript Files\SampleJavaScript7.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Javascript Files\Issue9719.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
