@@ -70,7 +70,7 @@ namespace Yahoo.Yui.Compressor.Tests
             // Arrange
             var compressor = CreateCompressorTask();
             compressor.EncodingType = "utf-8";
-           
+
             compressor.SourceFiles = new ITaskItem[]
                 {
                     new TaskItem(@"Javascript Files\Accents.js")
@@ -180,6 +180,31 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert
             Assert.That(BuildEngine.DoesNotContainError(compressor.BuildEngine, ("Output file cannot be the same as source file(s).")));
+        }
+
+        [Test]
+        public void If_OutputFile_Directory_Does_Not_Exist_It_Is_Created()
+        {
+            try
+            {
+                // Arange
+                var compressor = CreateCompressorTask();
+                compressor.SourceFiles = new ITaskItem[] { new TaskItem("Javascript Files\\SampleJavaScript1.js") };
+                compressor.OutputFile = "NewOutputDir\\Output.js";
+
+                // Act
+                compressor.Execute();
+
+                // Assert
+                Assert.That(Directory.Exists(Path.GetFullPath("NewOutputDir")));
+            }
+            finally
+            {
+                if (Directory.Exists(Path.GetFullPath("NewOutputDir")))
+                {
+                    Directory.Delete(Path.GetFullPath("NewOutputDir"), true);
+                }
+            }
         }
 
         private static CompressorTask GetJavascriptCompressorFor(string fileName)
