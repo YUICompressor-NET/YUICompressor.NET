@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 // ReSharper disable CheckNamespace
@@ -90,7 +91,7 @@ namespace Yahoo.Yui.Compressor.Build
 
             foreach (var sourceFile in SourceFiles)
             {
-                if (string.Compare(sourceFile.FileName, OutputFile, StringComparison.InvariantCultureIgnoreCase) ==0)
+                if (string.Compare(sourceFile.FileName, OutputFile, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     Log.LogError("Output file cannot be the same as source file(s).");
                     return false;
@@ -209,7 +210,7 @@ namespace Yahoo.Yui.Compressor.Build
                     throw new ArgumentException("Logging Type: " + LoggingType + " is invalid.", "LoggingType");
             }
         }
-        
+
         private void ParseEncoding()
         {
             if (string.IsNullOrEmpty(EncodingType))
@@ -248,7 +249,7 @@ namespace Yahoo.Yui.Compressor.Build
                     throw new ArgumentException("Encoding: " + EncodingType + " is invalid.", "EncodingType");
             }
         }
- 
+
         protected virtual void LogTaskParameters()
         {
             LogMessage("CompressionType: " + CompressionType);
@@ -395,9 +396,17 @@ namespace Yahoo.Yui.Compressor.Build
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         private bool SaveCompressedText(StringBuilder compressedText)
         {
             // Note: compressedText CAN be null or empty, so no check.
+
+            var outputDirectory = Path.GetDirectoryName(Path.GetFullPath(OutputFile));
+            if (!Directory.Exists(outputDirectory))
+            {
+                Log.LogMessage(string.Format("Creating output directory {0}", outputDirectory));
+                Directory.CreateDirectory(outputDirectory);
+            }
 
             try
             {
