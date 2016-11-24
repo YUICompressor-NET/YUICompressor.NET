@@ -717,6 +717,85 @@ namespace Yahoo.Yui.Compressor.Tests
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
         }
 
+        [Test]
+        [Description("https://github.com/YUICompressor-NET/YUICompressor.NET/issues/21")]
+        public void Compression_Fails_With_Invalid_Property_Id_When_A_Property_Is_Named_Default()
+        {
+            // Arrange
+            const string source = @"function _interopRequireDefault(obj) {
+                                        return obj && obj.__esModule ? obj : { default: obj };    // invalid property id
+                                   }";
+            //Act & Assert
+            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => target.Compress(source));
+            Assert.That(actual.Message.Contains("invalid property id"));
+            // Note: This is expected behaviour as "default" is a reserved word: http://www.w3schools.com/js/js_reserved.asp
+        }
+
+        [Test]
+        [Description("https://github.com/YUICompressor-NET/YUICompressor.NET/issues/21")]
+        public void Compression_Does_Not_Fail_When_A_Property_Is_Not_Named_Default()
+        {
+            // Arrange
+            const string source = @"function _interopRequireDefault(obj) {
+                                        return obj && obj.__esModule ? obj : { notDefault: obj };    // invalid property id
+                                   }";
+
+            // Act
+            target.Compress(source);
+        }
+
+        [Test]
+        [Description("https://github.com/YUICompressor-NET/YUICompressor.NET/issues/21")]
+        public void Compression_Fails_With_Invalid_Property_Id_When_A_Method_Is_Named_Default()
+        {
+            // Arrange
+            const string source = @"function onClick(e) {
+                                        var trigger = e.delegateTarget || e.currentTarget;
+
+                                        if (this.clipboardAction) {
+                                            this.clipboardAction = null;
+                                        }
+
+                                        this.clipboardAction = new _clipboardAction2.default({
+                                            action: this.action(trigger),                         // syntax error
+                                            target: this.target(trigger),                         // syntax error
+                                            text: this.text(trigger),                             // syntax error
+                                            trigger: trigger,                                     // syntax error
+                                            emitter: this                                         // syntax error
+                                        });
+                                    }";
+            //Act & Assert
+            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => target.Compress(source));
+            Console.WriteLine(actual.Message);
+            Assert.That(actual.Message.Contains("missing name after . operator"));
+            // Note: This is expected behaviour as "default" is a reserved word: http://www.w3schools.com/js/js_reserved.asp
+        }
+
+        [Test]
+        [Description("https://github.com/YUICompressor-NET/YUICompressor.NET/issues/21")]
+        public void Compression_Does_Not_Fail_When_A_Method_Is_Not_Named_Default()
+        {
+            // Arrange
+            const string source = @"function onClick(e) {
+                                        var trigger = e.delegateTarget || e.currentTarget;
+
+                                        if (this.clipboardAction) {
+                                            this.clipboardAction = null;
+                                        }
+
+                                        this.clipboardAction = new _clipboardAction2.notDefault({
+                                            action: this.action(trigger),                         // syntax error
+                                            target: this.target(trigger),                         // syntax error
+                                            text: this.text(trigger),                             // syntax error
+                                            trigger: trigger,                                     // syntax error
+                                            emitter: this                                         // syntax error
+                                        });
+                                    }";
+
+            // Act
+            target.Compress(source);
+        }
+
         private void CompressAndCompare(string source, string expected)
         {
             // Act
