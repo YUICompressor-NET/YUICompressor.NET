@@ -46,12 +46,12 @@ namespace Yahoo.Yui.Compressor.Tests.TestHelpers
 
         public int LineNumberOfTaskNode
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int ColumnNumberOfTaskNode
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public string ProjectFileOfTaskNode
