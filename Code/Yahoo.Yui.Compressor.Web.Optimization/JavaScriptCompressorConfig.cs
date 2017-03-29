@@ -13,6 +13,7 @@ namespace Yahoo.Yui.Compressor.Web.Optimization
             ObfuscateJavascript = true;
             PreserveAllSemicolons = false;
             IgnoreEval = false;
+            DisallowNakedComma = false;
             ThreadCulture = CultureInfo.InvariantCulture;
         }
 
@@ -22,6 +23,7 @@ namespace Yahoo.Yui.Compressor.Web.Optimization
         public bool ObfuscateJavascript { get; set; }
         public bool PreserveAllSemicolons { get; set; }
         public bool IgnoreEval { get; set; }
+        public bool DisallowNakedComma { get; set; }
         public CultureInfo ThreadCulture { get; set; }
         public LoggingType LoggingType { get; set; }
     }

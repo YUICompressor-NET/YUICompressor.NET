@@ -21,6 +21,8 @@ namespace Yahoo.Yui.Compressor.Build.MsBuild
 
         public bool IsEvalIgnored { get; set; }
 
+        public bool DisallowNakedComma { get; set; }
+
         public JavaScriptCompressorTask() : this(new JavaScriptCompressor())
         {
         }
@@ -72,6 +74,7 @@ namespace Yahoo.Yui.Compressor.Build.MsBuild
         {
             compressor.DisableOptimizations = DisableOptimizations;
             compressor.IgnoreEval = IsEvalIgnored;
+            compressor.DisallowNakedComma = DisallowNakedComma;
             compressor.ObfuscateJavascript = ObfuscateJavaScript;
             compressor.PreserveAllSemicolons = PreserveAllSemicolons;
             compressor.ThreadCulture = threadCulture;
@@ -85,6 +88,7 @@ namespace Yahoo.Yui.Compressor.Build.MsBuild
             TaskEngine.Log.LogBoolean("Preserve semi colons", PreserveAllSemicolons);
             TaskEngine.Log.LogBoolean("Disable optimizations", DisableOptimizations);
             TaskEngine.Log.LogBoolean("Is Eval Ignored", IsEvalIgnored);
+            TaskEngine.Log.LogBoolean("Disallow Naked Commas", DisallowNakedComma);
             TaskEngine.Log.LogMessage(
                 "Line break position: "
                 + (LineBreakPosition <= -1 ? "None" : LineBreakPosition.ToString(CultureInfo.InvariantCulture)));

@@ -13,6 +13,7 @@ namespace Yahoo.Yui.Compressor
         bool IgnoreEval { get; set; }
         bool ObfuscateJavascript { get; set; }
         bool PreserveAllSemicolons { get; set; }
+        bool DisallowNakedComma { get; set; }
         CultureInfo ThreadCulture { get; set; }
     }
 }
