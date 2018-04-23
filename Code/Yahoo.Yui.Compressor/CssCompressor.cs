@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -27,43 +28,47 @@ namespace Yahoo.Yui.Compressor
         {
             int totalLen = source.Length;
             int startIndex = 0;
-            var comments = new ArrayList();
-            var preservedTokens = new ArrayList();
+            var comments = new List<string>();
+            var preservedTokens = new List<string>();
             int max;
 
-            if (RemoveComments)
-            {
-                while ((startIndex = source.IndexOf(@"/*", startIndex, StringComparison.OrdinalIgnoreCase)) >= 0)
-                {
-                    int endIndex = source.IndexOf(@"*/", startIndex + 2, StringComparison.OrdinalIgnoreCase);
-                    if (endIndex < 0)
-                    {
+            StringBuilder stringBuilder = null;
+
+            if (RemoveComments) {
+                stringBuilder = new StringBuilder(source);
+                while ((startIndex = stringBuilder.IndexOf(@"/*", startIndex, true)) >= 0) {
+                    totalLen = stringBuilder.ToString().Length;
+
+                    int endIndex = stringBuilder.IndexOf(@"*/", startIndex + 2, true);
+                    if (endIndex < 0) {
                         endIndex = totalLen;
                     }
 
-                    // Note: java substring-length param = end index - 2 (which is end index - (startindex + 2))
-                    string token = source.Substring(startIndex + 2, endIndex - (startIndex + 2));
+                    string token = stringBuilder.ToString(startIndex + 2, endIndex - (startIndex + 2));
+                    var replaceLength = endIndex - startIndex + 2;
+                    if ((startIndex + replaceLength) > totalLen) {
+                        replaceLength = totalLen - startIndex;
+                    }
+                    string replace = stringBuilder.ToString(startIndex, replaceLength);
 
                     comments.Add(token);
 
-                    string newResult = Extensions.Replace(source, startIndex + 2, endIndex,
-                                                   Tokens.PreserveCandidateComment + (comments.Count - 1) +
-                                                   "___");
+                    var tokenReplacer = "/*" + Tokens.PreserveCandidateComment + (comments.Count - 1) + "___" + "*/";
+
+                    stringBuilder.Replace(replace, tokenReplacer, startIndex, replace.Length);
 
                     startIndex += 2;
-                    source = newResult;
                 }
+                source = stringBuilder.ToString();
             }
 
             // Preserve strings so their content doesn't get accidently minified
-            var stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             Match match = protectStringRegex.Match(source);
             int index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 var text = match.Groups[0].Value;
-                if (string.IsNullOrEmpty(text))
-                {
+                if (string.IsNullOrEmpty(text)) {
                     continue;
                 }
 
@@ -76,13 +81,11 @@ namespace Yahoo.Yui.Compressor
 
                 // Maybe the string contains a comment-like substring?
                 // one, maybe more? put'em back then.
-                if (token.IndexOf(Tokens.PreserveCandidateComment, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
+                if (token.IndexOf(Tokens.PreserveCandidateComment, StringComparison.OrdinalIgnoreCase) >= 0) {
                     max = comments.Count;
-                    for (int i = 0; i < max; i += 1)
-                    {
+                    for (int i = 0; i < max; i += 1) {
                         token = token.Replace(Tokens.PreserveCandidateComment + i + "___",
-                            comments[i].ToString());
+                            comments[i]);
                     }
                 }
 
@@ -102,15 +105,13 @@ namespace Yahoo.Yui.Compressor
 
             // Strings are safe, now wrestle the comments.
             max = comments.Count;
-            for (int i = 0; i < max; i += 1)
-            {
-                var token = comments[i].ToString();
+            for (int i = 0; i < max; i += 1) {
+                var token = comments[i];
                 var placeholder = Tokens.PreserveCandidateComment + i + "___";
 
                 // ! in the first position of the comment means preserve
                 // so push to the preserved tokens while stripping the !
-                if (token.StartsWith("!"))
-                {
+                if (token.StartsWith("!")) {
                     preservedTokens.Add(token);
                     source = source.Replace(placeholder, Tokens.PreservedToken + (preservedTokens.Count - 1) + "___");
                     continue;
@@ -118,8 +119,7 @@ namespace Yahoo.Yui.Compressor
 
                 // \ in the last position looks like hack for Mac/IE5
                 // shorten that to /*\*/ and the next one to /**/
-                if (token.EndsWith("\\"))
-                {
+                if (token.EndsWith("\\")) {
                     preservedTokens.Add("\\");
                     source = source.Replace(placeholder, Tokens.PreservedToken + (preservedTokens.Count - 1) + "___");
                     i = i + 1; // attn: advancing the loop.
@@ -131,13 +131,10 @@ namespace Yahoo.Yui.Compressor
 
                 // keep empty comments after child selectors (IE7 hack)
                 // e.g. html >/**/ body
-                if (token.Length == 0)
-                {
+                if (token.Length == 0) {
                     startIndex = source.IndexOf(placeholder, StringComparison.OrdinalIgnoreCase);
-                    if (startIndex > 2)
-                    {
-                        if (source[startIndex - 3] == '>')
-                        {
+                    if (startIndex > 2) {
+                        if (source[startIndex - 3] == '>') {
                             preservedTokens.Add(string.Empty);
                             source = source.Replace(placeholder,
                                               Tokens.PreservedToken + (preservedTokens.Count - 1) + "___");
@@ -147,15 +144,11 @@ namespace Yahoo.Yui.Compressor
 
                 // In all other cases kill the comment.
                 // Is this a closed comment?
-                if (source.Contains("/*" + placeholder + "*/"))
-                {
+                if (source.Contains("/*" + placeholder + "*/")) {
                     source = source.Replace("/*" + placeholder + "*/", string.Empty);
-                }
-                else
-                {
+                } else {
                     // Nope - is it an unclosed comment?
-                    if (source.Contains("/*" + placeholder))
-                    {
+                    if (source.Contains("/*" + placeholder)) {
                         // TODO: Add a Warning to the log (once we have a log!)
                         source = source.Replace("/*" + placeholder, string.Empty);
                     }
@@ -163,11 +156,10 @@ namespace Yahoo.Yui.Compressor
             }
 
             // Preserve any calc(...) css - https://yuicompressor.codeplex.com/workitem/11445
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = calcRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 preservedTokens.Add(match.Value);
                 string preserver = Tokens.PreservedToken + (preservedTokens.Count - 1) + "___";
 
@@ -183,11 +175,10 @@ namespace Yahoo.Yui.Compressor
             // Remove the spaces before the things that should not have spaces before them.
             // But, be careful not to turn "p :link {...}" into "p:link{...}"
             // Swap out any pseudo-class colons with the token, and then swap back.
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = spaceRemoverRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 string text = match.Value;
                 text = text.Replace(":", Tokens.PseudoClassColon);
                 text = text.Replace("\\\\", "\\\\\\\\");
@@ -234,11 +225,10 @@ namespace Yahoo.Yui.Compressor
 
             // Replace background-position:0; with background-position:0 0;
             // same for transform-origin
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = backgroundPositionRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 index = Extensions.AppendReplacement(match, stringBuilder, source,
                                                 match.Groups[1].Value.ToLowerInvariant() + ":0 0" + match.Groups[2],
                                                 index);
@@ -252,23 +242,19 @@ namespace Yahoo.Yui.Compressor
 
             // Shorten colors from rgb(51,102,153) to #336699
             // This makes it more likely that it'll get further compressed in the next step.
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = colorRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 var rgbcolors = match.Groups[1].Value.Split(',');
                 var hexcolor = new StringBuilder("#");
-                foreach (var rgbColour in rgbcolors)
-                {
+                foreach (var rgbColour in rgbcolors) {
                     int value;
-                    if (!Int32.TryParse(rgbColour, out value))
-                    {
+                    if (!Int32.TryParse(rgbColour, out value)) {
                         value = 0;
                     }
 
-                    if (value < 16)
-                    {
+                    if (value < 16) {
                         hexcolor.Append("0");
                     }
                     hexcolor.Append(Extensions.ToHexString(value).ToLowerInvariant());
@@ -286,23 +272,19 @@ namespace Yahoo.Yui.Compressor
             // would become
             //     filter: chroma(color="#FFF");
             // which makes the filter break in IE.
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = colorShortenerRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 // Test for AABBCC pattern.
                 if (Extensions.EqualsIgnoreCase(match.Groups[3].Value, match.Groups[4].Value) &&
                     Extensions.EqualsIgnoreCase(match.Groups[5].Value, match.Groups[6].Value) &&
-                    Extensions.EqualsIgnoreCase(match.Groups[7].Value, match.Groups[8].Value))
-                {
+                    Extensions.EqualsIgnoreCase(match.Groups[7].Value, match.Groups[8].Value)) {
                     string replacement = String.Concat(match.Groups[1].Value, match.Groups[2].Value, "#",
                                                        match.Groups[3].Value, match.Groups[5].Value,
                                                        match.Groups[7].Value);
                     index = Extensions.AppendReplacement(match, stringBuilder, source, replacement, index);
-                }
-                else
-                {
+                } else {
                     index = Extensions.AppendReplacement(match, stringBuilder, source, match.Value, index);
                 }
 
@@ -312,11 +294,10 @@ namespace Yahoo.Yui.Compressor
             source = stringBuilder.ToString();
 
             // border: none -> border:0
-            stringBuilder = new StringBuilder();
+            stringBuilder = new StringBuilder(source.Length);
             match = borderRegex.Match(source);
             index = 0;
-            while (match.Success)
-            {
+            while (match.Success) {
                 string replacement = match.Groups[1].Value.ToLowerInvariant() + ":0" + match.Groups[2].Value;
                 index = Extensions.AppendReplacement(match, stringBuilder, source, replacement, index);
                 match = match.NextMatch();
@@ -328,30 +309,25 @@ namespace Yahoo.Yui.Compressor
             source = Extensions.RegexReplace(source, "(?i)progid:DXImageTransform.Microsoft.Alpha\\(Opacity=", "alpha(opacity=");
 
             // Remove empty rules.
-            if (source.Contains("{}"))
-            {
+            if (source.Contains("{}")) {
                 //Test if contains because this regex may be very time consuming, up until 1minute for some 150kb css!)
                 source = emptyRuleRegex.Replace(source, String.Empty);
             }
 
-            if (LineBreakPosition >= 0)
-            {
+            if (LineBreakPosition >= 0) {
                 // Some source control tools don't like it when files containing lines longer
                 // than, say 8000 characters, are checked in. The linebreak option is used in
                 // that case to split long lines after a specific column.
                 int i = 0;
                 int linestartpos = 0;
                 stringBuilder = new StringBuilder(source);
-                while (i < stringBuilder.Length)
-                {
+                while (i < stringBuilder.Length) {
                     char c = stringBuilder[i++];
-                    if (c == '}' && i - linestartpos > LineBreakPosition)
-                    {
+                    if (c == '}' && i - linestartpos > LineBreakPosition) {
                         stringBuilder.Insert(i, '\n');
                         linestartpos = i;
                     }
                 }
-
                 source = stringBuilder.ToString();
             }
 
@@ -361,9 +337,8 @@ namespace Yahoo.Yui.Compressor
 
             // Restore preserved comments and strings.
             max = preservedTokens.Count;
-            for (int i = 0; i < max; i++)
-            {
-                source = source.Replace(Tokens.PreservedToken + i + "___", preservedTokens[i].ToString());
+            for (int i = 0; i < max; i++) {
+                source = source.Replace(Tokens.PreservedToken + i + "___", preservedTokens[i]);
             }
 
             // Trim the final string (for any leading or trailing white spaces).

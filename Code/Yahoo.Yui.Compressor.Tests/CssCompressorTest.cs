@@ -32,10 +32,9 @@ namespace Yahoo.Yui.Compressor.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void An_Exception_Is_Thrown_If_The_Incoming_Css_Is_Null()
         {
-            target.Compress(null);
+            Assert.Throws(typeof(ArgumentNullException), () => target.Compress(null));
         }
 
         [Test]

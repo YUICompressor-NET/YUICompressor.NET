@@ -10,6 +10,15 @@ namespace Yahoo.Yui.Compressor.Tests
 {
     // ReSharper disable InconsistentNaming
 
+    [SetUpFixture]
+    public class SetupClass {
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests() {
+            var dir = Path.GetDirectoryName(typeof(SetupClass).Assembly.Location);
+            Environment.CurrentDirectory = dir;
+        }
+    }
+
     [TestFixture]
     public class JavaScriptCompressorTest
     {
@@ -148,9 +157,9 @@ namespace Yahoo.Yui.Compressor.Tests
             var compressedJavascriptNoObfuscation = target.Compress(source);
 
             // Assert.
-            Assert.That(compressedJavascript, Is.Not.StringContaining(@"}get var"));
-            Assert.That(compressedJavascript, Is.StringContaining(@"\w\u0128"));
-            Assert.That(compressedJavascriptNoObfuscation, Is.StringContaining(@"\w\u0128"));
+            Assert.That(compressedJavascript, Does.Not.Contain(@"}get var"));
+            Assert.That(compressedJavascript, Does.Contain(@"\w\u0128"));
+            Assert.That(compressedJavascriptNoObfuscation, Does.Contain(@"\w\u0128"));
         }
 
         [Test]
@@ -204,7 +213,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
-            Assert.That(actual, Is.Not.StringContaining("number"), "Turning on ignoreEval should compress functions that call eval");
+            Assert.That(actual, Does.Not.Contain("number"), "Turning on ignoreEval should compress functions that call eval");
         }
 
         [Test]
@@ -219,7 +228,7 @@ namespace Yahoo.Yui.Compressor.Tests
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
-            Assert.That(actual, Is.StringContaining("number"), "Functions that call eval should not be compressed when ignoreEval is false");
+            Assert.That(actual, Does.Contain("number"), "Functions that call eval should not be compressed when ignoreEval is false");
         }
 
         [Test]
@@ -656,7 +665,7 @@ namespace Yahoo.Yui.Compressor.Tests
             {
                 if (errorMessage.Contains("[WARNING] Duplicate parameter name \"bar\""))
                 {
-                    Assert.That(errorMessage, Is.StringContaining("Line: 1"), "\"Line: 1\" not found in: " + errorMessage);
+                    Assert.That(errorMessage, Does.Contain("Line: 1"), "\"Line: 1\" not found in: " + errorMessage);
                     return;
                 }
             }
@@ -682,7 +691,7 @@ namespace Yahoo.Yui.Compressor.Tests
             {
                 if (errorMessage.Contains("The variable foo has already been declared in the same scope"))
                 {
-                    Assert.That(errorMessage, Is.Not.StringContaining("Line:"), "\"Line:\" found in: "+ errorMessage);
+                    Assert.That(errorMessage, Is.Not.Contains("Line:"), "\"Line:\" found in: "+ errorMessage);
                     return;
                 }
             }
