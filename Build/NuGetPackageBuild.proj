@@ -98,7 +98,7 @@
             <MSBuildBinaries Include="$(Src)\MainAssemblies\EcmaScript.NET.dll" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(MSBuildBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET20" />
+        <Copy SourceFiles="@(MSBuildBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET45" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(OriginalNuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NewNuSpecFile)" />
         <Copy SourceFiles="$(Src)\Build\SampleYuiCompressorMsBuild.proj" DestinationFiles="$(PackageTempFilesDir)\Sample-YuiCompressorMsBuild.proj" />
         <Copy SourceFiles="$(Src)\Build\ReadMe-Core.txt" DestinationFiles="$(PackageTempFilesDir)\readme.txt" />
@@ -131,7 +131,7 @@ This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor." /
             <NAntBinaries Include="$(Src)\MainAssemblies\EcmaScript.NET.dll" />
         </ItemGroup>
         
-        <Copy SourceFiles="@(NAntBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET20" />
+        <Copy SourceFiles="@(NAntBinaries)" DestinationFolder="$(PackageTempFilesDir)\lib\NET45" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\NuSpecs\$(NuSpecFile)" DestinationFiles="$(PackageTempDir)\$(NuSpecFile)" />
         <Copy SourceFiles="$(Src)\Build\New BSD License.txt" DestinationFiles="$(PackageTempFilesDir)\New BSD License.txt" />
         

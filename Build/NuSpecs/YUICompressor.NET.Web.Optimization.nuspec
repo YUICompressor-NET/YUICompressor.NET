@@ -21,10 +21,10 @@ This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor.</d
         <language>en-au</language>
         <tags>compression, compressor, minification, obfuscation, minify, bundle, bundler, combine, javascript, js, CSS, cascading style sheets, optimization, transform</tags>
         <dependencies>
-            <dependency id="EcmaScript.Net" version="1.0.1.0" />
+            <dependency id="EcmaScript.Net" version="2.0.0.0" />
             <dependency id="Microsoft.AspNet.Web.Optimization" version="[1.1.3, 2.0.0.0)" />
             <dependency id="WebGrease" version="[1.6.0, 2.0.0.0)" />
-            <dependency id="YUICompressor.NET" version="[2.0.0.0, 3.0.0.0)" />
+            <dependency id="YUICompressor.NET" version="3.0.0.0" />
         </dependencies>
     </metadata>
     <files>
