@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <PackageId>YUICompressor.NET</PackageId>
+    <Version>0.0.0</Version>
+    <Authors>Pure Krome and freeranger</Authors>
+    <Company>World-Domination Technologies Pty. Ltd.</Company>
+    <Product>YUICompressor.NET</Product>
+    <Summary>Minify and/or Combine JavaScript and/or Cascading Style Sheets.</Summary>
+    <Description>This library can minify and/or bundle any Javascript and/or Cascading Style Sheets.
+            
+This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor.</Description>
+    <Copyright>2008</Copyright>
+    <PackageLicenseUrl>https://github.com/YUICompressor-NET/YUICompressor.NET/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/YUICompressor-NET/YUICompressor.NET</PackageProjectUrl>
+    <PackageIconUrl>http://i.imgur.com/bR4Yf.jpg</PackageIconUrl>
+    <RepositoryUrl>https://github.com/YUICompressor-NET/YUICompressor.NET</RepositoryUrl>
+    <RepositoryType>.NET C#</RepositoryType>
+    <PackageTags>compression compressor minification obfuscation minify bundle bundler combine javascript js CSS cascading-style-sheets</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
