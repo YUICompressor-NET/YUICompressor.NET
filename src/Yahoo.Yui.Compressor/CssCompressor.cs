@@ -15,7 +15,7 @@ namespace Yahoo.Yui.Compressor
         private static Regex spaceRemoverRegex = new Regex("(^|\\})(([^\\{:])+:)+([^\\{]*\\{)", RegexOptions.Compiled);
         private static Regex backgroundPositionRegex = new Regex("(?i)(background-position|transform-origin|webkit-transform-origin|moz-transform-origin|o-transform-origin|ms-transform-origin):0(;|})", RegexOptions.Compiled);
         private static Regex colorRegex = new Regex("rgb\\s*\\(\\s*([0-9,\\s]+)\\s*\\)", RegexOptions.Compiled);
-        private static Regex colorShortenerRegex = new Regex("([^\"'=\\s])(\\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])", RegexOptions.Compiled);
+        private static Regex colorShortenerRegex = new Regex("([^\"'=\\s])(\\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])(?![0-9a-fA-F]{2})", RegexOptions.Compiled);
         private static Regex borderRegex = new Regex("(?i)(border|border-top|border-right|border-bottom|border-right|outline|background):none(;|})", RegexOptions.Compiled);
         private static Regex emptyRuleRegex = new Regex("[^\\}\\{/;]+\\{\\}", RegexOptions.Compiled);
         
