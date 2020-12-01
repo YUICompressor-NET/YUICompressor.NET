@@ -204,6 +204,20 @@ namespace Yahoo.Yui.Compressor.Tests
         }
 
         [Test]
+        public void Color_Styles_Have_8bit_Hex_Values_Compressed_To_Shorter_Equivalents()
+        {
+            // Arrange
+            const string source = @".color {
+                                      color: #ffeedd50;
+                                      background-color: #FFFFFF50;
+                                    }";
+            const string expected = @".color{color:#ffeedd50;background-color:#FFFFFF50}";
+
+            // Act & Assert
+            CompressAndCompare(source, expected);
+        }
+        
+        [Test]
         [Description("http://en.wikipedia.org/wiki/CSS_filter#Child_selector_hack")]
         public void Empty_Comments_After_A_Child_Selector_Are_Preserved_As_Hack_For_IE7()
         {
