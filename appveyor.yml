@@ -1,7 +1,7 @@
 
 version: '{build}.0.0-dev'
 configuration: Release
-os: Ubuntu
+os: Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 
@@ -18,7 +18,7 @@ init:
 
 install:
   # For .NET50
-  - curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --channel 5.0 --version 5.0.100 --install-dir /usr/share/dotnet
+  - sh: curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --channel 5.0 --version 5.0.100 --install-dir /usr/share/dotnet
 
 before_build:
   # Display .NET Core version
