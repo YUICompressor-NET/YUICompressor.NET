@@ -50,13 +50,11 @@ deploy:
     server: https://www.myget.org/F/pk-development/api/v2/package
     api_key:
       secure: AguzfXNvHBkkDebTyWHK7o9OC5YL3eszT6u7PnzGq2G7ozdUypDlGGpcFsTRYHEc
-    artifact: nuget-packages
     on:
       appveyor_repo_tag: false
   - provider: NuGet
     api_key:
       secure: 8EdmbIQFKJXCePp1LFPdA0QoocIaXmLeJeU3LNbvrQ5iROs9hBdKu+3n+94ndxj1
-    artifact: nuget-packages
     on:
       branch: master
       appveyor_repo_tag: true
