@@ -1,13 +1,8 @@
 
 version: '{build}.0.0-dev'
-configuration: Release
-os: Visual Studio 2019
+image: Ubuntu
 pull_requests:
   do_not_increment_build_number: true
-
-branches:
-  only:
-  - master
 
 # Override the 'version' if this is a GH-tag-commit -or- this is a custom branch (i.e not 'master').
 init:
@@ -19,9 +14,20 @@ init:
       }
       iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/PureKrome/0f79e25693d574807939/raw/f5b40256fc2ca77d49f1c7773d28406152544c1e/appveyor-build-info.ps'))
 
+
+matrix:
+  fast_finish: true
+
+configuration:
+  - Debug
+  - Release
+
 install:
+  # For RavenDb Testdriver
+  - curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version 3.1.403 --install-dir /usr/share/dotnet
+  
   # For .NET50
-  - sh: curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --channel 5.0 --version 5.0.100 --install-dir /usr/share/dotnet
+  - curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --channel 5.0 --version 5.0.100 --install-dir /usr/share/dotnet
 
 before_build:
   # Display .NET Core version
@@ -32,10 +38,33 @@ build_script:
   - ps: dotnet build -c $env:CONFIGURATION -v minimal /p:Version=$env:APPVEYOR_BUILD_VERSION --no-restore
 
 test_script:
-  - ps: dotnet test -c $env:CONFIGURATION -v minimal --no-build
+  - ps: |
+      if ($env:CONFIGURATION -eq 'Debug')
+      {
+          dotnet test -c $env:CONFIGURATION -v minimal --no-build --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory './CodeCoverageResults'
+      }
+      else
+      {
+          dotnet test -c $env:CONFIGURATION -v minimal --no-build
+      }
 
+
+# We only:
+#   - Send DEBUG results up to codecov.
+#   - Pack for RELEASE only.
 after_test:
-  - ps: dotnet pack -c $env:CONFIGURATION --no-build /p:Version=$env:APPVEYOR_BUILD_VERSION /p:ContinuousIntegrationBuild=true
+  - ps: |
+      if ($env:CONFIGURATION -eq 'Debug')
+      {
+          # Currently, the bash script version is better than the .exe version.
+          Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+          bash codecov.sh -s './CodeCoverageResults/' -f '*.xml' -Z
+      }
+      
+      if ($env:CONFIGURATION -eq 'Release')
+      {
+          dotnet pack -c $env:CONFIGURATION --no-build /p:Version=$env:APPVEYOR_BUILD_VERSION /p:ContinuousIntegrationBuild=true src/WorldDomination.SimpleRavenDb/WorldDomination.SimpleRavenDb.csproj
+      }
 
 artifacts:
   - path: '**\*.nupkg'
@@ -47,16 +76,8 @@ artifacts:
 
 deploy:
   - provider: NuGet
-    server: https://www.myget.org/F/pk-development/api/v2/package
-    api_key:
-      secure: AguzfXNvHBkkDebTyWHK7o9OC5YL3eszT6u7PnzGq2G7ozdUypDlGGpcFsTRYHEc
-    artifact: nuget-packages
-    on:
-      appveyor_repo_tag: false
-  - provider: NuGet
     api_key:
       secure: 8EdmbIQFKJXCePp1LFPdA0QoocIaXmLeJeU3LNbvrQ5iROs9hBdKu+3n+94ndxj1
-    artifact: nuget-packages
     on:
       branch: master
-      appveyor_repo_tag: true
+      APPVEYOR_REPO_TAG: true
