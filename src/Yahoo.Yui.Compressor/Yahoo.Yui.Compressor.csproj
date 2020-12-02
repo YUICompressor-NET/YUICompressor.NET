@@ -3,25 +3,55 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <PackageId>YUICompressor.NET</PackageId>
-    <Version>0.0.0</Version>
     <Authors>Pure Krome and freeranger</Authors>
     <Company>World-Domination Technologies Pty. Ltd.</Company>
     <Product>YUICompressor.NET</Product>
+    <Description>
+      This library can minify and/or bundle any Javascript and/or Cascading Style Sheets.
+
+      This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor.
+    </Description>
     <Summary>Minify and/or Combine JavaScript and/or Cascading Style Sheets.</Summary>
-    <Description>This library can minify and/or bundle any Javascript and/or Cascading Style Sheets.
-            
-This is a direct .NET port of the original Yahoo! UI Library: YUI Compressor.</Description>
     <Copyright>2008</Copyright>
-    <PackageLicenseUrl>https://github.com/YUICompressor-NET/YUICompressor.NET/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <OutputType>Library</OutputType>
     <PackageProjectUrl>https://github.com/YUICompressor-NET/YUICompressor.NET</PackageProjectUrl>
-    <PackageIconUrl>http://i.imgur.com/bR4Yf.jpg</PackageIconUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <RepositoryUrl>https://github.com/YUICompressor-NET/YUICompressor.NET</RepositoryUrl>
-    <RepositoryType>.NET C#</RepositoryType>
+    <RepositoryType>.net c# .net-core</RepositoryType>
     <PackageTags>compression compressor minification obfuscation minify bundle bundler combine javascript js CSS cascading-style-sheets</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+
+    <IsPackable>true</IsPackable>
+
+    <!-- Source Link. REF: https://github.com/dotnet/sourcelink -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
+    
+    
+    
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EcmaScript.NET" Version="2.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
 </Project>
