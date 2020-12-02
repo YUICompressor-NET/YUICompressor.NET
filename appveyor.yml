@@ -5,6 +5,9 @@ os: Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 
+branches:
+  only:
+  - master
 
 # Override the 'version' if this is a GH-tag-commit -or- this is a custom branch (i.e not 'master').
 init:
