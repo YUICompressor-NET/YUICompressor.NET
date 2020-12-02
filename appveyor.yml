@@ -1,7 +1,7 @@
 
 version: '{build}.0.0-dev'
 configuration: Release
-os: Visual Studio 2017
+os: Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 
