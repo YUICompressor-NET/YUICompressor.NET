@@ -1,15 +1,13 @@
 
 version: '{build}.0.0-dev'
 configuration: Release
-os: Visual Studio 2017
+os: Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 
-environment:
-  nuget_apiKey:
-    secure: jfcUvHZhgnUboplqTBDWr8mG5PIlrgBv5TA2fhhop4ZSiDxskyy+RtYyeHoduJFR
-  myget_apiKey:
-    secure: AguzfXNvHBkkDebTyWHK7o9OC5YL3eszT6u7PnzGq2G7ozdUypDlGGpcFsTRYHEc
+branches:
+  only:
+  - master
 
 # Override the 'version' if this is a GH-tag-commit -or- this is a custom branch (i.e not 'master').
 init:
@@ -21,23 +19,30 @@ init:
       }
       iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/PureKrome/0f79e25693d574807939/raw/f5b40256fc2ca77d49f1c7773d28406152544c1e/appveyor-build-info.ps'))
 
+install:
+  # For .NET50
+  - sh: curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --channel 5.0 --version 5.0.100 --install-dir /usr/share/dotnet
 
 before_build:
   # Display .NET Core version
-  - cmd: dotnet --info
-  # Display minimal restore text
-  - cmd: dotnet restore --verbosity quiet
+  - dotnet --info
 
 build_script:
-  - dotnet build -c %CONFIGURATION% -v minimal /p:Version=%APPVEYOR_BUILD_VERSION% --no-restore
+  - dotnet restore --verbosity quiet
+  - ps: dotnet build -c $env:CONFIGURATION -v minimal /p:Version=$env:APPVEYOR_BUILD_VERSION --no-restore
 
 test_script:
-  - dotnet test tests\Yahoo.Yui.Compressor.Tests -c %CONFIGURATION% -v minimal --no-restore --no-build
-  - dotnet pack -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% --no-restore --no-build
+  - ps: dotnet test -c $env:CONFIGURATION -v minimal --no-build
+
+after_test:
+  - ps: dotnet pack -c $env:CONFIGURATION --no-build /p:Version=$env:APPVEYOR_BUILD_VERSION /p:ContinuousIntegrationBuild=true
 
 artifacts:
   - path: '**\*.nupkg'
-    name: packaged-nugets
+    name: nuget-packages
+    type: NuGetPackage
+  - path: '**\*.snupkg'
+    name: nuget-symbols
     type: NuGetPackage
 
 deploy:
@@ -45,18 +50,13 @@ deploy:
     server: https://www.myget.org/F/pk-development/api/v2/package
     api_key:
       secure: AguzfXNvHBkkDebTyWHK7o9OC5YL3eszT6u7PnzGq2G7ozdUypDlGGpcFsTRYHEc
-    skip_symbols: true
-    artifact: packaged-nugets
+    artifact: nuget-packages
     on:
       appveyor_repo_tag: false
   - provider: NuGet
     api_key:
-      secure: jfcUvHZhgnUboplqTBDWr8mG5PIlrgBv5TA2fhhop4ZSiDxskyy+RtYyeHoduJFR
-    skip_symbols: true
-    artifact: packaged-nugets
+      secure: 8EdmbIQFKJXCePp1LFPdA0QoocIaXmLeJeU3LNbvrQ5iROs9hBdKu+3n+94ndxj1
+    artifact: nuget-packages
     on:
       branch: master
       appveyor_repo_tag: true
-
-cache:
-  - packages -> **\packages.config

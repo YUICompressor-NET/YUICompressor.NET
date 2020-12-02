@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -13,12 +13,12 @@ namespace Yahoo.Yui.Compressor.Tests
     [TestFixture]
     public class JavaScriptCompressorTest
     {
-        private JavaScriptCompressor target;
+        private JavaScriptCompressor _target;
 
         [SetUp]
         public void SetUp()
         {
-            target = new JavaScriptCompressor();
+            _target = new JavaScriptCompressor();
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript1.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -42,7 +42,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript2.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -67,7 +67,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\jquery-1.2.6-vsdoc.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -82,7 +82,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\jquery-1.3.1.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -96,11 +96,11 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript4.js");
 
             // Act.
-            target.ObfuscateJavascript = false;
-            var actualCompressedNotObfuscatedJavascript = target.Compress(source);
+            _target.ObfuscateJavascript = false;
+            var actualCompressedNotObfuscatedJavascript = _target.Compress(source);
 
-            target.ObfuscateJavascript = true;
-            var actualCompressedObfuscatedJavascript = target.Compress(source);
+            _target.ObfuscateJavascript = true;
+            var actualCompressedObfuscatedJavascript = _target.Compress(source);
 
             // Assert.
             Assert.That(actualCompressedNotObfuscatedJavascript, Is.Not.Null.Or.Empty, "Not Obfuscated Null or Empty");
@@ -119,7 +119,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript5.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -142,10 +142,10 @@ namespace Yahoo.Yui.Compressor.Tests
                                    quickClass = new RegExp(""^([#.]?)("" + chars + ""*)"");";
             
             // Act.
-            target.ObfuscateJavascript = true;
-            var compressedJavascript = target.Compress(source); 
-            target.ObfuscateJavascript = false;
-            var compressedJavascriptNoObfuscation = target.Compress(source);
+            _target.ObfuscateJavascript = true;
+            var compressedJavascript = _target.Compress(source); 
+            _target.ObfuscateJavascript = false;
+            var compressedJavascriptNoObfuscation = _target.Compress(source);
 
             // Assert.
             Assert.That(compressedJavascript, Does.Not.Contain("}get var"));
@@ -158,10 +158,10 @@ namespace Yahoo.Yui.Compressor.Tests
         {
             // Arrange.
             var source = File.ReadAllText(@"Javascript Files\jquery-1.3.1.js");
-            target.ObfuscateJavascript = false;
+            _target.ObfuscateJavascript = false;
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
          
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -197,14 +197,14 @@ namespace Yahoo.Yui.Compressor.Tests
         {
             // Arrange.
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript-ignoreEval.js");
-            target.IgnoreEval = true;
+            _target.IgnoreEval = true;
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
-            Assert.That(actual, Is.Not.StringContaining("number"), "Turning on ignoreEval should compress functions that call eval");
+            Assert.That(actual, Does.Not.Contains("number"), "Turning on ignoreEval should compress functions that call eval");
         }
 
         [Test]
@@ -212,10 +212,10 @@ namespace Yahoo.Yui.Compressor.Tests
         {
             // Arrange.
             var source = File.ReadAllText(@"Javascript Files\SampleJavaScript-ignoreEval.js");
-            target.IgnoreEval = false;
+            _target.IgnoreEval = false;
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -239,8 +239,8 @@ namespace Yahoo.Yui.Compressor.Tests
 
                 // Act
                 // Pass in some other culture
-                target.ThreadCulture = CultureInfo.CreateSpecificCulture("it-IT");
-                target.Compress("var stuff = {foo:0.9, faa:3};");
+                _target.ThreadCulture = CultureInfo.CreateSpecificCulture("it-IT");
+                _target.Compress("var stuff = {foo:0.9, faa:3};");
 
                 // Assert
                 // Check the culture is thee sam
@@ -268,7 +268,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var originalThreadUICulture = Thread.CurrentThread.CurrentUICulture;
             const string source = "var stuff = {foo:0.9, faa:3};";
             const string expected = "var stuff={foo:0.9,faa:3};";
-            target.ThreadCulture = CultureInfo.InvariantCulture;
+            _target.ThreadCulture = CultureInfo.InvariantCulture;
 
             try
             {
@@ -276,7 +276,7 @@ namespace Yahoo.Yui.Compressor.Tests
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("it-IT");
 
                 // Act
-                var actual = target.Compress(source); 
+                var actual = _target.Compress(source); 
 
                 // Assert.
                 Assert.That(actual, Is.EqualTo(expected));
@@ -304,7 +304,7 @@ namespace Yahoo.Yui.Compressor.Tests
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("it-IT");
 
                 // Act
-                var actual = target.Compress(source); 
+                var actual = _target.Compress(source); 
 
                 // Assert.
                 Assert.That(actual, Is.EqualTo(expected));
@@ -325,7 +325,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var originalThreadUICulture = Thread.CurrentThread.CurrentUICulture;
             var expectedThreadCulture = CultureInfo.CreateSpecificCulture("it-IT");
 
-            target.ThreadCulture = CultureInfo.CreateSpecificCulture("zh-CN");
+            _target.ThreadCulture = CultureInfo.CreateSpecificCulture("zh-CN");
 
             // The following script should throw an exception
             const string source = @"<script type=""text/javascript>alert('hello world');</script>";
@@ -336,7 +336,7 @@ namespace Yahoo.Yui.Compressor.Tests
                 Thread.CurrentThread.CurrentUICulture = expectedThreadCulture;
 
                 // Act
-                target.Compress(source);
+                _target.Compress(source);
             }
             catch (Exception)
             {
@@ -379,8 +379,10 @@ namespace Yahoo.Yui.Compressor.Tests
                     Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(threadCulture);
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(threadCulture);
                 }
-                var compressor = new JavaScriptCompressor();
-                compressor.Encoding = Encoding.UTF8;
+                var compressor = new JavaScriptCompressor
+                {
+                    Encoding = Encoding.UTF8
+                };
                 if (compressorCulture != null)
                 {
                     compressor.ThreadCulture = CultureInfo.CreateSpecificCulture(compressorCulture);
@@ -412,10 +414,10 @@ namespace Yahoo.Yui.Compressor.Tests
                 };
             })();";
             const string expected = @"(function(){var a=window;a.hello=function(a,b){a.alert(""Hello, ""+a)}})();";
-            target.ObfuscateJavascript = true;
+            _target.ObfuscateJavascript = true;
 
             // Act
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected));
@@ -434,10 +436,10 @@ namespace Yahoo.Yui.Compressor.Tests
                 };
             })();";
             const string expected = @"(function(){var w=window;w.hello=function(a,abc){w.alert(""Hello, ""+a)}})();";
-            target.ObfuscateJavascript = false;
+            _target.ObfuscateJavascript = false;
 
             // Act
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected));
@@ -467,7 +469,7 @@ namespace Yahoo.Yui.Compressor.Tests
             const string expected = "var anObject={property:\"value\",propertyTwo:\"value2\"};alert(\"single quoted string \"+anObject.property+\" end string\");";
 
             // Act
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected));
@@ -479,10 +481,10 @@ namespace Yahoo.Yui.Compressor.Tests
             // Arrange
             // Deliberately include loads of spaces and comments
             const string source = "function   foo() {   return 'bar';   }  /*  Some Comment */";
-            target.CompressionType = CompressionType.None;
+            _target.CompressionType = CompressionType.None;
 
             // Act
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert
             Assert.That(actual, Is.EqualTo(source));
@@ -541,7 +543,7 @@ namespace Yahoo.Yui.Compressor.Tests
                                   ];";
             
             // Act
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert
             Assert.That(actual, Is.Not.EqualTo("var serverResolutions=[152.87405654907226,0.14929107084870338];"));
@@ -582,9 +584,9 @@ namespace Yahoo.Yui.Compressor.Tests
             foreach (var value in values)
             {
                 var decVal = decimal.Parse(value);
-                string G = decVal.ToString("G");
-                string G16 = decVal.ToString("G16");
-                string G17 = decVal.ToString("G99");
+                var G = decVal.ToString("G");
+                var G16 = decVal.ToString("G16");
+                var G17 = decVal.ToString("G99");
                 output += string.Format("{0,22} {1,22}{4}{2,22}{5}{3,22}{6}{7}", value, G, G16, G17, value == G ? string.Empty : "*", value == G16 ? string.Empty : "*", value == G17 ? string.Empty : "*", Environment.NewLine);
             }
 
@@ -614,7 +616,7 @@ namespace Yahoo.Yui.Compressor.Tests
                                         0.07464553542435169     
                                         ];";
 
-            var result = target.Compress(source);
+            var result = _target.Compress(source);
             Assert.AreEqual("var serverResolutions=[156543.03390625,78271.516953125,39135.7584765625,19567.87923828125,9783.939619140625,4891.9698095703125,2445.9849047851562,1222.9924523925781,611.4962261962891,305.74811309814453,152.87405654907226,76.43702827453613,38.218514137268066,19.109257068634033,9.554628534317017,4.777314267158508,2.388657133579254,1.194328566789627,0.5971642833948135,0.29858214169740677,0.14929107084870338,0.07464553542435169];", result);
         }
 
@@ -628,7 +630,7 @@ namespace Yahoo.Yui.Compressor.Tests
             // Act
             try
             {
-                target.Compress(source);
+                _target.Compress(source);
                 Assert.Fail("Succeeded");
             }
             catch (EcmaScriptRuntimeException ex)
@@ -643,13 +645,13 @@ namespace Yahoo.Yui.Compressor.Tests
         {
             // Arrange
             const string source = @"function foo(bar, bar) {}";
-            target.LoggingType = LoggingType.Debug;
+            _target.LoggingType = LoggingType.Debug;
 
             // Act
-            target.Compress(source);
+            _target.Compress(source);
 
             // Assert
-            var reporter = (CustomErrorReporter) target.ErrorReporter;
+            var reporter = (CustomErrorReporter) _target.ErrorReporter;
             Assert.That(reporter.ErrorMessages.Count, Is.Not.EqualTo(0), "No Messages");
 
             foreach (var errorMessage in reporter.ErrorMessages)
@@ -669,20 +671,20 @@ namespace Yahoo.Yui.Compressor.Tests
             // Arrange
             const string source = @"var foo = 'bar';
                                     var foo = 'bar';";
-            target.LoggingType = LoggingType.Debug;
+            _target.LoggingType = LoggingType.Debug;
 
             // Act
-            target.Compress(source);
+            _target.Compress(source);
 
             // Assert
-            var reporter = (CustomErrorReporter) target.ErrorReporter;
+            var reporter = (CustomErrorReporter) _target.ErrorReporter;
             Assert.That(reporter.ErrorMessages.Count, Is.Not.EqualTo(0), "No Messages");
             
             foreach (var errorMessage in reporter.ErrorMessages)
             {
                 if (errorMessage.Contains("The variable foo has already been declared in the same scope"))
                 {
-                    Assert.That(errorMessage, Is.Not.StringContaining("Line:"), "\"Line:\" found in: "+ errorMessage);
+                    Assert.That(errorMessage, Does.Not.Contain("Line:"), "\"Line:\" found in: "+ errorMessage);
                     return;
                 }
             }
@@ -697,7 +699,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\jquery.caret.1.02_bom_at_start.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -711,7 +713,7 @@ namespace Yahoo.Yui.Compressor.Tests
             var source = File.ReadAllText(@"Javascript Files\jquery.caret.1.02.js");
 
             // Act.
-            var actual = target.Compress(source);
+            var actual = _target.Compress(source);
 
             // Assert.
             Assert.That(actual, Is.Not.Null.Or.Empty, "Null or Empty");
@@ -726,7 +728,7 @@ namespace Yahoo.Yui.Compressor.Tests
                                         return obj && obj.__esModule ? obj : { default: obj };    // invalid property id
                                    }";
             //Act & Assert
-            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => target.Compress(source));
+            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => _target.Compress(source));
             Assert.That(actual.Message.Contains("invalid property id"));
             // Note: This is expected behaviour as "default" is a reserved word: http://www.w3schools.com/js/js_reserved.asp
         }
@@ -741,7 +743,7 @@ namespace Yahoo.Yui.Compressor.Tests
                                    }";
 
             // Act
-            target.Compress(source);
+            _target.Compress(source);
         }
 
         [Test]
@@ -766,7 +768,7 @@ namespace Yahoo.Yui.Compressor.Tests
                                         });
                                     }";
             //Act & Assert
-            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => target.Compress(source));
+            var actual = Assert.Throws<EcmaScriptRuntimeException>(() => _target.Compress(source));
             Console.WriteLine(actual.Message);
             Assert.That(actual.Message.Contains("missing name after . operator"));
             // Note: This is expected behaviour as "default" is a reserved word: http://www.w3schools.com/js/js_reserved.asp
@@ -794,14 +796,14 @@ namespace Yahoo.Yui.Compressor.Tests
                                     }";
 
             // Act
-            target.Compress(source);
+            _target.Compress(source);
         }
 
         private void CompressAndCompare(string source, string expected)
         {
             // Act
-            target.ObfuscateJavascript = false;
-            var actual = target.Compress(source); 
+            _target.ObfuscateJavascript = false;
+            var actual = _target.Compress(source); 
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected));

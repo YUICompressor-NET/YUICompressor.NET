@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -70,7 +70,7 @@ namespace Yahoo.Yui.Compressor.Tests
             // Since we don't have linq in .net 2 land :}
             for (var i = 0; i < exclusions.Count; i++)
             {
-                exclusions[i] = "Compatability Test Files\\" + exclusions[i] + extension;
+                exclusions[i] = Path.Combine("Compatability Test Files", exclusions[i] + extension);
             }
 
             var sourceFiles = Directory.GetFiles("Compatability Test Files", "*" + extension);
