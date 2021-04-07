@@ -1,3 +1,18 @@
+
+07-04-2021
+
+## This repo is now NOT MAINTAINED. ##
+
+It's been a lovely journey but there are now better options out there and I've personally not used this library is years and years and years.
+
+To be fair to the community, there will be no further support and effort here.
+
+Keep smiling and be kind to one another 👋 🚀
+
+-PK-
+
+---
+
 ## Project Description
 This is a .NET port of the Yahoo! UI Library's YUI Compressor Java project. The objective of this project is to compress any Javascript and Cascading Style Sheets to an efficient level that works exactly as the original source, before it was minified.
 
